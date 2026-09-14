@@ -16,7 +16,7 @@ const Modal = ({
 
         <div className="flex items-center justify-between border-b px-6 py-4">
 
-          <h2 className="text-xl font-semibold">
+          <h2 className="font-heading text-2xl font-bold">
             {title}
           </h2>
 
