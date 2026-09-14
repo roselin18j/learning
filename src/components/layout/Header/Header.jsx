@@ -34,7 +34,7 @@ export default function Header() {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 `}
+                className={` `}
             >
                 <div className="max-container mx-auto flex items-center justify-between px-8">
 
@@ -42,8 +42,8 @@ export default function Header() {
                         <img src={logo} alt="logo" />
                     </Link>
 
-                    <nav className={`flex gap-8 ${isSticky
-                        ? "bg-white/90 backdrop-blur-md shadow-lg py-3"
+                    <nav className={`flex gap-8 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky
+                        ? "bg-black/50 backdrop-blur-md shadow-lg py-3 w-fit mx-auto text-white" 
                         : "bg-transparent py-5"
                     }`}>
                         {navLinks.map((item) => (
@@ -51,7 +51,7 @@ export default function Header() {
                                 key={item.path}
                                 to={item.path}
                                 className={`font-body font-semibold transition-colors duration-300 ${isSticky
-                                        ? "text-black hover:text-maroon"
+                                        ? "text-white hover:text-maroon"
                                         : "text-white hover:text-maroon"
                                     }`}
                             >
