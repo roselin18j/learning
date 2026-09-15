@@ -65,7 +65,7 @@ export default function Hero() {
         },
     ];
     return (
-        <section className="relative h-screen">
+        <section className="relative">
 
             <Swiper
                 modules={[
@@ -83,14 +83,14 @@ export default function Hero() {
                     delay: 5000,
                     disableOnInteraction: false,
                 }}
-                className="h-full"
+                className=""
             >
 
                 {slides.map((slide, index) => (
 
                     <SwiperSlide key={index}>
 
-                        <div className="relative h-screen pt-50">
+                        <div className="relative  pt-20">
 
                             <div className="absolute inset-0">
 
@@ -105,14 +105,14 @@ export default function Hero() {
                             <div className="absolute inset-0 bg-black/70"></div>
 
                             <motion.div
-                                className="relative z-10 container"
+                                className="relative z-10 container py-10"
                                 variants={contentVariants}
                                 initial="hidden"
                                 whileInView="visible"
                                 viewport={{ once: false }}
                             >
 
-                                <div className="max-w-6xl">
+                                <div className="max-w-3xl mx-auto text-center">
 
                                     <motion.span
                                         variants={itemVariants}
@@ -123,21 +123,21 @@ export default function Hero() {
 
                                     <motion.h1
                                         variants={itemVariants}
-                                        className="font-heading text-5xl font-bold leading-tight text-white lg:text-7xl"
+                                        className="font-heading text-3xl font-bold leading-none text-white lg:text-6xl line-height"
                                     >
                                         {slide.title}
                                     </motion.h1>
 
                                     <motion.p
                                         variants={itemVariants}
-                                        className="mt-6 max-w-xl font-body text-lg leading-8 text-white/90"
+                                        className="mt-4 max-w-6xl font-body text-lg leading-8 text-white/90"
                                     >
                                         {slide.description}
                                     </motion.p>
 
                                     <motion.div
                                         variants={itemVariants}
-                                        className="mt-10 flex gap-4"
+                                        className="mt-10 flex gap-4 justify-center"
                                     >
 
                                         <button className="rounded-lg bg-maroon px-8 py-4 font-semibold text-white hover:opacity-90 transition">

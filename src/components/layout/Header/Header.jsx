@@ -34,7 +34,7 @@ export default function Header() {
     return (
         <>
             <header
-                className={` `}
+                className={`bg-ivory`}
             >
                 <div className="max-container mx-auto flex items-center justify-between px-8">
 
@@ -42,17 +42,17 @@ export default function Header() {
                         <img src={logo} alt="logo" />
                     </Link>
 
-                    <nav className={`flex gap-8 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isSticky
-                        ? "bg-black/50 backdrop-blur-md shadow-lg py-3 w-fit mx-auto text-white" 
-                        : "bg-transparent py-5"
+                    <nav className={`flex gap-8  transition-all duration-300 ${isSticky
+                        ? "bg-black/50 backdrop-blur-md rounded-3xl px-5 mt-2 shadow-lg py-3 w-fit mx-auto fixed top-0 left-0 right-0 z-50" 
+                        : "bg-transparent py-5 tx"
                     }`}>
                         {navLinks.map((item) => (
                             <Link
                                 key={item.path}
                                 to={item.path}
                                 className={`font-body font-semibold transition-colors duration-300 ${isSticky
-                                        ? "text-white hover:text-maroon"
-                                        : "text-white hover:text-maroon"
+                                        ? "text-white hover:text-maroon text-black"
+                                        : "text-black hover:text-maroon "
                                     }`}
                             >
                                 {item.title}
@@ -62,7 +62,7 @@ export default function Header() {
 
                     <button
                         onClick={() => setOpenDonate(true)}
-                        className="rounded-full bg-maroon px-6 py-3 text-white transition hover:bg-coral"
+                        className="rounded-full bg-maroon px-6 py-3 text-white transition hover:bg-darkmaroon"
                     >
                         Quick Donate
                     </button>
