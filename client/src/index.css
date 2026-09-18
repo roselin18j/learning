@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-maroon: #723480;
+  --color-darkmaroon : #dbd4ff;
+  --color-ivory: #ffffe3;
+  --color-green: #808034;
+  --color-black : #222; 
+  --color-gold: #C8A45D;
+  --font-heading: "Source Sans 3", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+
+@utility container {
+  width: 100%;
+  max-width: 1350px;
+  margin-inline: auto;
+}
+
+@utility max-container {
+  width: 100%;
+  max-width: 1650px;
+  margin-inline: auto;
+}
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: #A60321;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: white;
+  opacity: 0.5;
+}
+ .swiper-pagination-horizontal.swiper-pagination-bullets{bottom: 30px;}
+.swiper-pagination-bullet-active {
+  width: 32px;
+  border-radius: 999px;
+  background: #A60321;
+  opacity: 1;
+}
