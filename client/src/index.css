@@ -1,16 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-maroon: #723480;
-  --color-darkmaroon : #dbd4ff;
-  --color-ivory: #ffffe3;
-  --color-green: #808034;
-  --color-black : #222; 
-  --color-gold: #C8A45D;
+   --color-maroon: #E63950;   
+  --color-darkmaroon: #9E1B4D; 
+  --color-ivory: #FFF8F0;       
+  --color-green: #2EC4B6;       
+  --color-black: #22223B;  
   --font-heading: "Source Sans 3", sans-serif;
   --font-body: "Inter", sans-serif;
 }
-
 
 @utility container {
   width: 100%;

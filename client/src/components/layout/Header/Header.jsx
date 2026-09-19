@@ -35,7 +35,7 @@ export default function Header() {
     return (
         <>
             <header
-                className={`bg-ivory`}
+                className={`bg-white`}
             >
                 <div className="max-container mx-auto flex items-center justify-between px-8">
 
