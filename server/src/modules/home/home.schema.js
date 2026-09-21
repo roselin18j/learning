@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-/* ---------------- Hero ---------------- */
+
 const heroSlideSchema = new Schema(
   {
     badge: {
