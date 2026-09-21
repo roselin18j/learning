@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-   --color-maroon: #E63950;   
-  --color-darkmaroon: #9E1B4D; 
-  --color-ivory: #FFF8F0;       
-  --color-green: #2EC4B6;       
+   --color-maroon: #450C3F;   
+  --color-darkmaroon: #6A1B59;
+  --color-ivory: #F8FAFC;       
+  --color-green: #B9D175;       
   --color-black: #22223B;  
   --font-heading: "Source Sans 3", sans-serif;
   --font-body: "Inter", sans-serif;
