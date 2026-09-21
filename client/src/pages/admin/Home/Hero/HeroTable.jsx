@@ -116,15 +116,13 @@ export default function HeroTable({
                 className="border-b hover:bg-slate-50"
               >
 
-                <td className="px-5 py-4">
-
-                  <img
-                    src={slide.image}
-                    alt={slide.imageAlt}
-                    className="w-28 h-16 rounded-lg object-cover"
-                  />
-
-                </td>
+<td className="px-5 py-4">
+  <img
+    src={slide.image?.url}
+    alt={slide.imageAlt || slide.title}
+    className="w-28 h-16 rounded-lg object-cover border"
+  />
+</td>
 
                 <td className="px-5 py-4">
 
