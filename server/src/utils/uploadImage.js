@@ -5,10 +5,8 @@ const uploadImage = async (filePath, folder) => {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
       folder,
-      resource_type: "image",
     });
 
-    // Delete local temporary file
     fs.unlinkSync(filePath);
 
     return {
@@ -16,7 +14,6 @@ const uploadImage = async (filePath, folder) => {
       publicId: result.public_id,
     };
   } catch (error) {
-    // Delete temp file even if upload fails
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }

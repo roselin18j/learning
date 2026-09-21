@@ -13,11 +13,11 @@ export const createHeroSlide = (formData) =>
   });
 
 export const updateHeroSlide = (id, formData) =>
-  api.put(`/home/hero/slide/${id}`, formData, {
+  api.put(`/home/hero/slides/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   });
 
 export const deleteHeroSlide = (id) =>
-  api.delete(`/home/hero/slide/${id}`);
+  api.delete(`/home/hero/slides/${id}`);

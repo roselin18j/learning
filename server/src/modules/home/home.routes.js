@@ -49,6 +49,7 @@ router.post(
 
 router.put(
   "/hero/slides/:slideId",
+  upload.single("image"),
   updateHeroSlideValidation,
   validationMiddleware,
   HomeController.updateHeroSlide

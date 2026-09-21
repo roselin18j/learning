@@ -87,25 +87,26 @@ async addHeroSlide(slideData) {
   /**
    * Update Hero Slide
    */
-  async updateHeroSlide(slideId, data) {
-    const home = await this.findHome();
+async updateHeroSlide(slideId, data) {
 
-    const slide = home.hero.slides.id(slideId);
+  const home = await this.findHome();
 
-    if (!slide) {
-      throw new ApiError(404, "Hero slide not found.");
-    }
+  const slide = home.hero.slides.id(slideId);
 
-    Object.assign(slide, data);
-
-    home.hero.slides.sort(
-      (a, b) => a.order - b.order
-    );
-
-    await home.save();
-
-    return slide;
+  if (!slide) {
+    throw new ApiError(404, "Hero slide not found.");
   }
+
+  Object.assign(slide, data);
+
+  home.hero.slides.sort(
+    (a, b) => a.order - b.order
+  );
+
+  await home.save();
+
+  return slide;
+}
 
   /**
    * Delete Hero Slide
