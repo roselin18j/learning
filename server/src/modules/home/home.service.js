@@ -132,6 +132,66 @@ async updateHeroSlide(slideId, data) {
       message: "Hero slide deleted successfully.",
     };
   }
+
+  // About section 
+
+async findHome() {
+  const home = await Home.findOne();
+
+  if (!home) {
+    throw new ApiError(404, "Home data not found.");
+  }
+
+  return home;
+}
+
+/**
+ * Get About Section
+ */
+
+async getAboutSection() {
+
+    const home = await this.findHome();
+
+    return home.about;
+
+}
+/**
+ * Update About Section
+ */
+async updateAboutSection(data) {
+
+  const home = await this.findHome();
+
+  home.about.badge =
+    data.badge ?? home.about.badge;
+
+  home.about.title =
+    data.title ?? home.about.title;
+
+  home.about.description =
+    data.description ?? home.about.description;
+
+if (data.features && typeof data.features === "string") {
+  try {
+    data.features = JSON.parse(data.features);
+  } catch (err) {
+    console.log("Features Parse Error:", err);
+  }
+}
+
+  if (data.image) {
+    home.about.image = data.image;
+  }
+
+  home.about.isActive =
+    data.isActive ?? home.about.isActive;
+
+  await home.save();
+
+  return home.about;
+}
+
 }
 
 export default new HomeService();

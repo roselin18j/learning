@@ -21,3 +21,10 @@ export const updateHeroSlide = (id, formData) =>
 
 export const deleteHeroSlide = (id) =>
   api.delete(`/home/hero/slides/${id}`);
+
+
+export const getAbout = () =>
+  api.get("/home/about");
+
+export const updateAbout = (data) =>
+  api.put("/home/about", data);

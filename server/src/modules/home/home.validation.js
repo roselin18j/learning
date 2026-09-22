@@ -189,3 +189,64 @@ export const updateHeroSettingsValidation = [
     .isBoolean()
     .withMessage("Hero status must be true or false."),
 ];
+
+
+
+/* ==========================================================================
+   Update About Section
+========================================================================== */
+
+
+
+export const updateAboutSectionValidation = [
+
+  body("badge")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage("Badge must not exceed 100 characters."),
+
+  body("title")
+    .notEmpty()
+    .withMessage("Title is required.")
+    .trim()
+    .isLength({ max: 200 })
+    .withMessage("Title must not exceed 200 characters."),
+
+  body("description")
+    .notEmpty()
+    .withMessage("Description is required.")
+    .trim()
+    .isLength({ max: 1500 })
+    .withMessage("Description must not exceed 1500 characters."),
+
+  body("features")
+    .optional()
+    .isArray({ min: 0, max: 4 })
+    .withMessage("Maximum 4 features are allowed."),
+
+  body("features.*.title")
+    .optional()
+    .trim()
+    .isLength({ max: 100 })
+    .withMessage("Feature title must not exceed 100 characters."),
+
+  body("features.*.description")
+    .optional()
+    .trim()
+    .isLength({ max: 250 })
+    .withMessage("Feature description must not exceed 250 characters."),
+
+  // Frontend sends imageAlt
+  body("imageAlt")
+    .optional()
+    .trim()
+    .isLength({ max: 150 })
+    .withMessage("Image alt text must not exceed 150 characters."),
+
+  body("isActive")
+    .optional()
+    .isBoolean()
+    .withMessage("isActive must be true or false."),
+
+];

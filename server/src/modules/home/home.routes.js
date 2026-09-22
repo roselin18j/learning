@@ -1,11 +1,12 @@
 import { Router } from "express";
 import upload from "../../middleware/upload.middleware.js";
 import HomeController from "./home.controller.js";
-
+import parseAboutMiddleware from "../../middleware/parseAbout.middleware.js";
 import {
   createHeroSlideValidation,
   updateHeroSlideValidation,
   updateHeroSettingsValidation,
+  updateAboutSectionValidation,
 } from "./home.validation.js";
 
 import validationMiddleware from "../../middleware/validation.middleware.js";
@@ -58,6 +59,26 @@ router.put(
 router.delete(
   "/hero/slides/:slideId",
   HomeController.deleteHeroSlide
+);
+
+/*
+|--------------------------------------------------------------------------
+| About
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/about",
+  HomeController.getAbout
+);
+
+router.put(
+  "/about",
+    parseAboutMiddleware,  
+  upload.single("image"),
+  updateAboutSectionValidation,
+  validationMiddleware,
+  HomeController.updateAbout
 );
 
 export default router;

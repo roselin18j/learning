@@ -68,23 +68,23 @@ const Hero = () => {
                 reload={loadHero}
             />
 
-          <HeroTable
-    hero={hero}
-    reload={loadHero}
-    setSelectedHero={setSelectedHero}
-    setOpenModal={setOpenModal}
-/>
+            <HeroTable
+                hero={hero}
+                reload={loadHero}
+                setSelectedHero={setSelectedHero}
+                setOpenModal={setOpenModal}
+            />
 
-<HeroModal
-    open={openModal}
-    hero={selectedHero}
-    reload={loadHero}
-    onClose={()=>{
-        setOpenModal(false);
-        setSelectedHero(null);
-    }}
-/>
-          
+            <HeroModal
+                open={openModal}
+                hero={selectedHero}
+                reload={loadHero}
+                onClose={() => {
+                    setOpenModal(false);
+                    setSelectedHero(null);
+                }}
+            />
+
 
             <HeroList
                 hero={hero}

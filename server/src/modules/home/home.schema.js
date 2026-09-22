@@ -131,17 +131,69 @@ const heroSchema = new Schema(
 
 /* ---------------- About Preview ---------------- */
 
+const featureSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { _id: false }
+);
+
 const aboutSchema = new Schema(
   {
-    title: String,
-    subtitle: String,
-    description: String,
 
-    image: String,
+    badge: {
+      type: String,
+      default: "WHO WE ARE",
+      trim: true,
+    },
 
-    buttonText: String,
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-    buttonLink: String,
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    features: {
+      type: [featureSchema],
+      default: [],
+      validate: {
+        validator: (v) => v.length <= 4,
+        message: "Maximum 4 features are allowed.",
+      },
+    },
+
+    image: {
+      url: {
+        type: String,
+        required: true,
+      },
+
+      publicId: {
+        type: String,
+        required: true,
+      },
+
+      alt: {
+        type: String,
+        default: "About Us",
+      },
+    },
 
     isActive: {
       type: Boolean,
@@ -404,4 +456,5 @@ const homeSchema = new Schema(
 export {
   heroSlideSchema,
   heroSchema,
+  aboutSchema,
 };

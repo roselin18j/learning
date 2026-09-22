@@ -21,9 +21,10 @@ class HomeController {
     );
   });
 
-  /**
+  /*
    * POST /api/v1/home
    */
+
   createHome = asyncHandler(async (req, res) => {
     const home = await HomeService.createHome(req.body);
 
@@ -170,6 +171,65 @@ deleteHeroSlide = asyncHandler(async (req, res) => {
     )
   );
 });
+
+getAbout = asyncHandler(async (req, res) => {
+
+const about = await HomeService.getAboutSection();
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "About fetched successfully.",
+      about
+    )
+  );
+});
+
+updateAbout = asyncHandler(async (req, res) => {
+
+  let data = {
+    ...req.body,
+  };
+
+  // Handle features safely
+  if (data.features) {
+
+    if (typeof data.features === "string") {
+      data.features = JSON.parse(data.features);
+    }
+
+    // if already an array/object, leave it as is
+
+  }
+
+  if (req.file) {
+
+    const image = await uploadImage(
+      req.file.path,
+      "ngo/home/about"
+    );
+
+    data.image = {
+      url: image.url,
+      publicId: image.publicId,
+      alt: data.imageAlt || "",
+    };
+
+  }
+
+  const about =
+    await HomeService.updateAboutSection(data);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "About updated successfully.",
+      about
+    )
+  );
+
+});
+
 }
 
 export default new HomeController();
