@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import Dashboard from "../pages/admin/Dashboard/Dashboard";
 import Hero from "../pages/admin/Home/Hero/Hero";
 import About from "../pages/admin/Home/About/About";
+import Services from "../pages/admin/Home/Services/Services";
 
 export default function AdminRoutes() {
     return (
@@ -14,6 +15,7 @@ export default function AdminRoutes() {
             <Route path="homepage">
                 <Route path="hero" element={<Hero />} />
                 <Route path="about" element={<About/>}/>
+                <Route path="services" element={<Services/>}/>
             </Route>
         </>
     );

@@ -28,3 +28,9 @@ export const getAbout = () =>
 
 export const updateAbout = (data) =>
   api.put("/home/about", data);
+
+export const getService = () =>
+  api.get("/home/services");
+
+export const updateService = (data) =>
+  api.put("/home/services", data);

@@ -80,4 +80,26 @@ router.put(
   HomeController.updateAbout
 );
 
+router.get(
+  "/services",
+  HomeController.getServicesSection
+);
+
+router.put(
+  "/services",
+  updateServicesValidation,
+  validationMiddleware,
+  HomeController.updateServicesSection
+);
+
+router.get(
+  "/services",
+  HomeController.getServicesSection
+);
+
+router.put(
+  "/services",
+  HomeController.updateServicesSection
+);
+
 export default router;
