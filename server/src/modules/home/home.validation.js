@@ -222,7 +222,13 @@ export const updateAboutSectionValidation = [
 
   body("features")
     .optional()
-    .isArray({ min: 0, max: 4 })
+    .customSanitizer((value) => {
+      if (typeof value === "string") {
+        return JSON.parse(value);
+      }
+      return value;
+    })
+    .isArray({ max: 4 })
     .withMessage("Maximum 4 features are allowed."),
 
   body("features.*.title")

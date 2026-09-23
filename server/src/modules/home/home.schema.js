@@ -150,7 +150,6 @@ const featureSchema = new Schema(
 
 const aboutSchema = new Schema(
   {
-
     badge: {
       type: String,
       default: "WHO WE ARE",
@@ -159,13 +158,13 @@ const aboutSchema = new Schema(
 
     title: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
 
     description: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
 
@@ -181,17 +180,18 @@ const aboutSchema = new Schema(
     image: {
       url: {
         type: String,
-        required: true,
+        default: "",
       },
 
       publicId: {
         type: String,
-        required: true,
+        default: "",
       },
 
       alt: {
         type: String,
         default: "About Us",
+        trim: true,
       },
     },
 
@@ -208,17 +208,29 @@ const aboutSchema = new Schema(
 
 const serviceItemSchema = new Schema(
   {
-    title: String,
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-    shortDescription: String,
+    shortDescription: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-    image: String,
+    slug: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
 
-    icon: String,
-
-    slug: String,
-
-    order: Number,
+    order: {
+      type: Number,
+      default: 1,
+    },
 
     isActive: {
       type: Boolean,
@@ -230,17 +242,49 @@ const serviceItemSchema = new Schema(
 
 const servicesSchema = new Schema(
   {
-    title: String,
+    badge: {
+      type: String,
+      default: "OUR SERVICES",
+      trim: true,
+    },
 
-    subtitle: String,
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-    description: String,
+    subtitle: {
+      type: String,
+      trim: true,
+    },
 
-    services: [serviceItemSchema],
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-    buttonText: String,
+    services: {
+      type: [serviceItemSchema],
+      default: [],
+      validate: {
+        validator: (v) => v.length <= 6,
+        message: "Maximum 6 services are allowed.",
+      },
+    },
 
-    buttonLink: String,
+    buttonText: {
+      type: String,
+      default: "View All Services",
+      trim: true,
+    },
+
+    buttonLink: {
+      type: String,
+      default: "/services",
+      trim: true,
+    },
 
     isActive: {
       type: Boolean,

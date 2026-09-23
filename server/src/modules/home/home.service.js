@@ -153,9 +153,10 @@ async getAboutSection() {
 
     const home = await this.findHome();
 
-    return home.about;
+    return home.aboutSection;
 
 }
+
 /**
  * Update About Section
  */
@@ -163,33 +164,114 @@ async updateAboutSection(data) {
 
   const home = await this.findHome();
 
-  home.about.badge =
-    data.badge ?? home.about.badge;
-
-  home.about.title =
-    data.title ?? home.about.title;
-
-  home.about.description =
-    data.description ?? home.about.description;
-
-if (data.features && typeof data.features === "string") {
-  try {
-    data.features = JSON.parse(data.features);
-  } catch (err) {
-    console.log("Features Parse Error:", err);
-  }
+  // Create about object if it doesn't exist
+ if (!home.aboutSection) {
+  home.aboutSection = {
+    badge: "WHO WE ARE",
+    title: "",
+    description: "",
+    features: [],
+    image: {
+      url: "",
+      publicId: "",
+      alt: "About Us",
+    },
+    isActive: true,
+  };
 }
 
-  if (data.image) {
-    home.about.image = data.image;
+
+ home.aboutSection.badge =
+    data.badge ?? home.aboutSection.badge;
+
+  home.aboutSection.title =
+    data.title ?? home.aboutSection.title;
+
+  home.aboutSection.description =
+    data.description ?? home.aboutSection.description;
+
+  // You forgot this
+  if (data.features) {
+    home.aboutSection.features = data.features;
   }
 
-  home.about.isActive =
-    data.isActive ?? home.about.isActive;
+  if (data.image) {
+    home.aboutSection.image = data.image;
+  }
+
+if (data.imageAlt && home.aboutSection.image) {
+  home.aboutSection.image.alt = data.imageAlt;
+}
+
+  home.aboutSection.isActive =
+    data.isActive ?? home.aboutSection.isActive;
 
   await home.save();
 
-  return home.about;
+  return home.aboutSection;
+}
+
+/**
+ * Get Services Section
+ */
+
+async getServiceSection() {
+
+  const home = await this.findHome();
+
+  return home.servicesSection;
+
+}
+
+/**
+ * Update Services Section
+ */
+async updateServiceSection(data) {
+
+  const home = await this.findHome();
+
+  if (!home.servicesSection) {
+
+    home.servicesSection = {
+      title: "",
+      subtitle: "",
+      description: "",
+      services: [],
+      buttonText: "",
+      buttonLink: "",
+      isActive: true,
+    };
+
+  }
+
+  home.servicesSection.title =
+    data.title ?? home.servicesSection.title;
+
+  home.servicesSection.subtitle =
+    data.subtitle ?? home.servicesSection.subtitle;
+
+  home.servicesSection.description =
+    data.description ?? home.servicesSection.description;
+
+  if (data.services) {
+
+    home.servicesSection.services = data.services;
+
+  }
+
+  home.servicesSection.buttonText =
+    data.buttonText ?? home.servicesSection.buttonText;
+
+  home.servicesSection.buttonLink =
+    data.buttonLink ?? home.servicesSection.buttonLink;
+
+  home.servicesSection.isActive =
+    data.isActive ?? home.servicesSection.isActive;
+
+  await home.save();
+
+  return home.servicesSection;
+
 }
 
 }

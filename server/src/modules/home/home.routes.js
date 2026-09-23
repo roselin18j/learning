@@ -1,7 +1,7 @@
 import { Router } from "express";
 import upload from "../../middleware/upload.middleware.js";
 import HomeController from "./home.controller.js";
-import parseAboutMiddleware from "../../middleware/parseAbout.middleware.js";
+// import parseAboutMiddleware from "../../middleware/parseAbout.middleware.js";
 import {
   createHeroSlideValidation,
   updateHeroSlideValidation,
@@ -74,7 +74,6 @@ router.get(
 
 router.put(
   "/about",
-    parseAboutMiddleware,  
   upload.single("image"),
   updateAboutSectionValidation,
   validationMiddleware,

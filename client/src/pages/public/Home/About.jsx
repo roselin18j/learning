@@ -1,41 +1,62 @@
+import { useEffect, useState } from "react";
 import { FaHeart, FaArrowRight } from "react-icons/fa";
+import { getAbout } from "../../../services/home.service";
 
 export default function About() {
 
-    const about = {
-        badge: "WHO WE ARE",
+    const [about, setAbout] = useState(null);
 
-        title: "Serving Humanity With Compassion & Transparency",
+    const [loading, setLoading] = useState(true);
 
-        description:
-            "We work to improve lives through education, healthcare, food support, elderly care and community development. Together with volunteers and donors, we create lasting change.",
+    useEffect(() => {
 
-        features: [
-            {
-                title: "Education Support",
-                description:
-                    "Providing quality education and learning opportunities for children.",
-            },
-            {
-                title: "Medical Camps",
-                description:
-                    "Offering free healthcare services and wellness programs.",
-            },
-            {
-                title: "Food Distribution",
-                description:
-                    "Delivering nutritious meals to families facing hardship.",
-            },
-            {
-                title: "Elderly Care",
-                description:
-                    "Supporting senior citizens with dignity, care and compassion.",
-            },
-        ],
+        fetchAbout();
 
-        image:
-            "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=900&q=80",
+    }, []);
+
+    const fetchAbout = async () => {
+
+        try {
+
+            const res = await getAbout();
+
+            setAbout(res.data.data);
+
+        } catch (err) {
+
+            console.log(err);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
     };
+
+    if (loading) {
+
+        return (
+            <section className="py-24 bg-ivory">
+                <div className="container text-center">
+                    Loading...
+                </div>
+            </section>
+        );
+
+    }
+
+    if (!about) {
+
+        return (
+            <section className="py-24 bg-ivory">
+                <div className="container text-center">
+                    No About Data Found
+                </div>
+            </section>
+        );
+
+    }
 
     return (
 
@@ -75,7 +96,7 @@ export default function About() {
 
                         <div className="mt-12 space-y-8">
 
-                            {about.features.map((item, index) => (
+                            {about.features?.map((item, index) => (
 
                                 <div
                                     key={index}
@@ -158,8 +179,6 @@ export default function About() {
 
                     <div className="relative">
 
-                        {/* Background Shape */}
-
                         <div
                             className="
                                 absolute
@@ -172,18 +191,22 @@ export default function About() {
                             "
                         />
 
-                        <img
-                            src={about.image}
-                            alt="About Hope Charity"
-                            className="
-                                relative
-                                h-[650px]
-                                w-full
-                                rounded-[40px]
-                                object-cover
-                                shadow-2xl
-                            "
-                        />
+                        {about.image?.url && (
+
+                            <img
+                                src={about.image.url}
+                                alt={about.image.alt || "About"}
+                                className="
+                                    relative
+                                    h-[650px]
+                                    w-full
+                                    rounded-[40px]
+                                    object-cover
+                                    shadow-2xl
+                                "
+                            />
+
+                        )}
 
                     </div>
 

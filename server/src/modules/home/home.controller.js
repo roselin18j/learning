@@ -1,14 +1,12 @@
 import asyncHandler from "../../utils/asyncHandler.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 import ApiError from "../../utils/ApiError.js";
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "../../config/cloudinary.js";
 import HomeService from "./home.service.js";
 import uploadImage from "../../utils/uploadImage.js";
 
 class HomeController {
-  /**
-   * GET /api/v1/home
-   */
+
   getHome = asyncHandler(async (req, res) => {
     const home = await HomeService.getHome();
 
@@ -187,22 +185,20 @@ const about = await HomeService.getAboutSection();
 
 updateAbout = asyncHandler(async (req, res) => {
 
-  let data = {
-    ...req.body,
-  };
+  let data = { ...req.body };
 
-  // Handle features safely
-  if (data.features) {
-
-    if (typeof data.features === "string") {
-      data.features = JSON.parse(data.features);
-    }
-
-    // if already an array/object, leave it as is
-
+  if (data.features && typeof data.features === "string") {
+    data.features = JSON.parse(data.features);
   }
 
+  const currentAbout = await HomeService.getAboutSection();
+
+
   if (req.file) {
+
+    const deleted = await cloudinary.uploader.destroy(
+      currentAbout.image.publicId
+    );
 
     const image = await uploadImage(
       req.file.path,
@@ -212,19 +208,56 @@ updateAbout = asyncHandler(async (req, res) => {
     data.image = {
       url: image.url,
       publicId: image.publicId,
-      alt: data.imageAlt || "",
+      alt: data.imageAlt || "About Us",
     };
-
   }
 
-  const about =
-    await HomeService.updateAboutSection(data);
+  const about = await HomeService.updateAboutSection(data);
 
   return res.status(200).json(
     new ApiResponse(
       200,
-      "About updated successfully.",
+      "Updated",
       about
+    )
+  );
+});
+
+
+/**
+ * GET Services Section
+ */
+getServicesSection = asyncHandler(async (req, res) => {
+
+  const service = await HomeService.getServiceSection();
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "Services fetched successfully.",
+      service
+    )
+  );
+
+});
+
+
+/**
+ * UPDATE Services Section
+ */
+updateServicesSection = asyncHandler(async (req, res) => {
+
+  const data = {
+    ...req.body,
+  };
+
+  const service = await HomeService.updateServiceSection(data);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "Services updated successfully.",
+      service
     )
   );
 

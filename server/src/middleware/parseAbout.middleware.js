@@ -1,16 +1,9 @@
-const parseAboutMiddleware = (req, res, next) => {
+// console.log("******** PARSE MIDDLEWARE LOADED ********");
 
-    if (req.body.features) {
-        try {
-            req.body.features = JSON.parse(req.body.features);
-        } catch (err) {
-            return res.status(400).json({
-                message: "Invalid features format.",
-            });
-        }
-    }
+// const parseAboutMiddleware = (req, res, next) => {
+//   console.log("Middleware Executed");
 
-    next();
-};
+//   return next();
+// };
 
-export default parseAboutMiddleware;
+// export default parseAboutMiddleware;
