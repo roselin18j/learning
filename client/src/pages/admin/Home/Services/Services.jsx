@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { getService } from "../../../../services/home.service";
 import PageHeader from "../../Components/PageHeader/PageHeader";
+import ServicesForm from "./ServicesForm";
 
+import {
+  getService,
+  updateService,
+} from "../../../../services/home.service";
 
 const Services = () => {
   const [service, setService] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   const loadService = async () => {
@@ -15,7 +18,6 @@ const Services = () => {
       const response = await getService();
 
       setService(response.data.data);
-
     } catch (err) {
       console.error(err);
     } finally {
@@ -35,23 +37,22 @@ const Services = () => {
     );
   }
 
- return (
-    <div className="space-y-6">
+return (
+  <div className="space-y-6">
 
-      <PageHeader
-        title="Services Section"
-        subtitle="Manage homepage services section."
-      />
+    <PageHeader
+      title="Services Section"
+      subtitle="Manage homepage services section."
+    />
 
-      {service && (
-        <pre className="bg-gray-100 p-4 rounded-lg">
-          {JSON.stringify(service, null, 2)}
-        </pre>
-      )}
+    <ServicesForm
+  service={service}
+  updateService={updateService}
+  reload={loadService}
+/>
 
-    </div>
-  );
-  
+  </div>
+);
 };
 
 export default Services;

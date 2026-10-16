@@ -7,6 +7,7 @@ import {
   updateHeroSlideValidation,
   updateHeroSettingsValidation,
   updateAboutSectionValidation,
+  updateServicesValidation,
 } from "./home.validation.js";
 
 import validationMiddleware from "../../middleware/validation.middleware.js";
@@ -80,26 +81,24 @@ router.put(
   HomeController.updateAbout
 );
 
-// router.get(
-//   "/services",
-//   HomeController.getServicesSection
-// );
+router.get("/test", (req, res) => {
+  res.send("TEST WORKING");
+});
 
-// router.put(
-//   "/services",
-//   updateServicesValidation,
-//   validationMiddleware,
-//   HomeController.updateServicesSection
-// );
+router.get("/services", (req, res) => {
+  res.json({
+    success: true,
+    message: "Services route working",
+  });
+});
 
-// router.get(
-//   "/services",
-//   HomeController.getServicesSection
-// );
+router.put(
+  "/services",
+  updateServicesValidation,
+  validationMiddleware,
+  HomeController.updateServicesSection
+);
 
-// router.put(
-//   "/services",
-//   HomeController.updateServicesSection
-// );
+
 
 export default router;

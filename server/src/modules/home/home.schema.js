@@ -214,7 +214,7 @@ const serviceItemSchema = new Schema(
       trim: true,
     },
 
-    shortDescription: {
+    description: {
       type: String,
       required: true,
       trim: true,
@@ -223,8 +223,9 @@ const serviceItemSchema = new Schema(
     slug: {
       type: String,
       required: true,
-      trim: true,
+      unique: true,
       lowercase: true,
+      trim: true,
     },
 
     order: {
@@ -272,18 +273,6 @@ const servicesSchema = new Schema(
         validator: (v) => v.length <= 6,
         message: "Maximum 6 services are allowed.",
       },
-    },
-
-    buttonText: {
-      type: String,
-      default: "View All Services",
-      trim: true,
-    },
-
-    buttonLink: {
-      type: String,
-      default: "/services",
-      trim: true,
     },
 
     isActive: {
@@ -501,4 +490,5 @@ export {
   heroSlideSchema,
   heroSchema,
   aboutSchema,
+  servicesSchema,
 };

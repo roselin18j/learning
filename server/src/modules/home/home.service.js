@@ -214,13 +214,11 @@ if (data.imageAlt && home.aboutSection.image) {
 /**
  * Get Services Section
  */
-
 async getServiceSection() {
 
   const home = await this.findHome();
 
   return home.servicesSection;
-
 }
 
 /**
@@ -233,16 +231,18 @@ async updateServiceSection(data) {
   if (!home.servicesSection) {
 
     home.servicesSection = {
+      badge: "OUR SERVICES",
       title: "",
       subtitle: "",
       description: "",
       services: [],
-      buttonText: "",
-      buttonLink: "",
       isActive: true,
     };
 
   }
+
+  home.servicesSection.badge =
+    data.badge ?? home.servicesSection.badge;
 
   home.servicesSection.title =
     data.title ?? home.servicesSection.title;
@@ -254,16 +254,8 @@ async updateServiceSection(data) {
     data.description ?? home.servicesSection.description;
 
   if (data.services) {
-
     home.servicesSection.services = data.services;
-
   }
-
-  home.servicesSection.buttonText =
-    data.buttonText ?? home.servicesSection.buttonText;
-
-  home.servicesSection.buttonLink =
-    data.buttonLink ?? home.servicesSection.buttonLink;
 
   home.servicesSection.isActive =
     data.isActive ?? home.servicesSection.isActive;
@@ -271,7 +263,6 @@ async updateServiceSection(data) {
   await home.save();
 
   return home.servicesSection;
-
 }
 
 }

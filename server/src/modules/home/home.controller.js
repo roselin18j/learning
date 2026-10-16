@@ -19,10 +19,6 @@ class HomeController {
     );
   });
 
-  /*
-   * POST /api/v1/home
-   */
-
   createHome = asyncHandler(async (req, res) => {
     const home = await HomeService.createHome(req.body);
 
@@ -35,9 +31,6 @@ class HomeController {
     );
   });
 
-  /**
-   * PUT /api/v1/home/hero/settings
-   */
   updateHeroSettings = asyncHandler(async (req, res) => {
     const home = await HomeService.updateHeroSettings(req.body);
 
@@ -50,9 +43,6 @@ class HomeController {
     );
   });
 
-/**
- * POST /api/v1/home/hero/slide
- */
 addHeroSlide = asyncHandler(async (req, res) => {
 
   console.log("========== HERO UPLOAD ==========");
@@ -83,11 +73,6 @@ addHeroSlide = asyncHandler(async (req, res) => {
     )
   );
 });
-
-
-  /**
-   * PUT /api/v1/home/hero/slide/:slideId
-   */
 
   updateHeroSlide = asyncHandler(async (req, res) => {
 
@@ -227,8 +212,10 @@ updateAbout = asyncHandler(async (req, res) => {
 /**
  * GET Services Section
  */
+/**
+ * GET Services Section
+ */
 getServicesSection = asyncHandler(async (req, res) => {
-
   const service = await HomeService.getServiceSection();
 
   return res.status(200).json(
@@ -238,9 +225,7 @@ getServicesSection = asyncHandler(async (req, res) => {
       service
     )
   );
-
 });
-
 
 /**
  * UPDATE Services Section
@@ -251,18 +236,17 @@ updateServicesSection = asyncHandler(async (req, res) => {
     ...req.body,
   };
 
-  const service = await HomeService.updateServiceSection(data);
+  const services = await HomeService.updateServiceSection(data);
 
   return res.status(200).json(
     new ApiResponse(
       200,
       "Services updated successfully.",
-      service
+      services
     )
   );
 
 });
-
 }
 
 export default new HomeController();
