@@ -123,16 +123,9 @@ export const galleryVideoSchema = new Schema(
     },
 
     thumbnail: {
-      url: {
-        type: String,
-        required: true,
-      },
-
-      publicId: {
-        type: String,
-        required: true,
-      },
-    },
+  url: String,
+  publicId: String,
+},
 
     video: {
       url: {
