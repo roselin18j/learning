@@ -218,7 +218,7 @@ async getServiceSection() {
 
   const home = await this.findHome();
 
-  return home.servicesSection;
+  return home.serviceSchema;
 }
 
 /**
@@ -228,9 +228,9 @@ async updateServiceSection(data) {
 
   const home = await this.findHome();
 
-  if (!home.servicesSection) {
+  if (!home.serviceSchema) {
 
-    home.servicesSection = {
+    home.serviceSchema = {
       badge: "OUR SERVICES",
       title: "",
       subtitle: "",
@@ -241,28 +241,28 @@ async updateServiceSection(data) {
 
   }
 
-  home.servicesSection.badge =
-    data.badge ?? home.servicesSection.badge;
+  home.serviceSchema.badge =
+    data.badge ?? home.serviceSchema.badge;
 
-  home.servicesSection.title =
-    data.title ?? home.servicesSection.title;
+  home.serviceSchema.title =
+    data.title ?? home.serviceSchema.title;
 
-  home.servicesSection.subtitle =
-    data.subtitle ?? home.servicesSection.subtitle;
+  home.serviceSchema.subtitle =
+    data.subtitle ?? home.serviceSchema.subtitle;
 
-  home.servicesSection.description =
-    data.description ?? home.servicesSection.description;
+  home.serviceSchema.description =
+    data.description ?? home.serviceSchema.description;
 
   if (data.services) {
-    home.servicesSection.services = data.services;
+    home.serviceSchema.services = data.services;
   }
 
-  home.servicesSection.isActive =
-    data.isActive ?? home.servicesSection.isActive;
+  home.serviceSchema.isActive =
+    data.isActive ?? home.serviceSchema.isActive;
 
   await home.save();
 
-  return home.servicesSection;
+  return home.serviceSchema;
 }
 
 }

@@ -258,72 +258,22 @@ export const updateAboutSectionValidation = [
 ];
 
 export const updateServicesValidation = [
-
   body("badge")
     .trim()
     .notEmpty()
-    .withMessage("Badge is required.")
-    .isLength({ max: 100 })
-    .withMessage("Badge cannot exceed 100 characters."),
+    .withMessage("Badge is required."),
 
   body("title")
     .trim()
     .notEmpty()
-    .withMessage("Title is required.")
-    .isLength({ max: 200 })
-    .withMessage("Title cannot exceed 200 characters."),
-
-  body("subtitle")
-    .optional()
-    .trim()
-    .isLength({ max: 200 })
-    .withMessage("Subtitle cannot exceed 200 characters."),
+    .withMessage("Title is required."),
 
   body("description")
     .trim()
     .notEmpty()
-    .withMessage("Description is required.")
-    .isLength({ max: 1000 })
-    .withMessage("Description cannot exceed 1000 characters."),
-
-  body("services")
-    .isArray({ min: 1, max: 6 })
-    .withMessage("Minimum 1 and maximum 6 services are allowed."),
-
-  body("services.*.title")
-    .trim()
-    .notEmpty()
-    .withMessage("Service title is required.")
-    .isLength({ max: 150 })
-    .withMessage("Service title cannot exceed 150 characters."),
-
-  body("services.*.shortDescription")
-    .trim()
-    .notEmpty()
-    .withMessage("Service short description is required.")
-    .isLength({ max: 500 })
-    .withMessage("Service short description cannot exceed 500 characters."),
-
-  body("services.*.slug")
-    .trim()
-    .notEmpty()
-    .withMessage("Service slug is required.")
-    .isSlug()
-    .withMessage("Slug must be valid."),
-
-  body("services.*.order")
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage("Order must be a positive number."),
-
-  body("services.*.isActive")
-    .optional()
-    .isBoolean()
-    .withMessage("Service status must be true or false."),
+    .withMessage("Description is required."),
 
   body("isActive")
     .optional()
     .isBoolean()
-    .withMessage("Section status must be true or false."),
-
 ];

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { aboutSchema, heroSchema, servicesSchema } from "./home.schema.js";
+import { aboutSchema, heroSchema, serviceSchema } from "./home.schema.js";
 
 const { Schema, model } = mongoose;
 
@@ -14,7 +14,7 @@ const homeSchema = new Schema(
       default: () => ({}),
     },
     serviceSchema: {
-      type: servicesSchema,
+      type: serviceSchema,
       default: () => ({}),
     },
   },

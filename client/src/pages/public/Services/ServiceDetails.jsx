@@ -167,19 +167,72 @@ export default function ServiceDetails() {
 
 
 
-                           <h2 className="mt-6 text-4xl font-bold">
-     {service.title}
-</h2>
+                            <h2 className="mt-6 text-4xl font-bold">
+                                {service.title}
+                            </h2>
 
                         </div>
 
                         <div
-                            className="prose prose-lg max-w-none prose-headings:font-bold prose-img:rounded-xl prose-img:shadow-lg prose-a:text-maroon prose-li:my-2"
+                            className="
+    prose
+    max-w-none
+
+    prose-p:text-base
+    sm:prose-p:text-lg
+    prose-p:leading-7
+    sm:prose-p:leading-8
+
+    prose-h1:text-2xl
+    sm:prose-h1:text-3xl
+    lg:prose-h1:text-4xl
+    prose-h1:font-bold
+    prose-h1:text-maroon
+    prose-h1:mb-6
+
+    prose-h2:text-1xl
+    sm:prose-h2:text-2xl
+    lg:prose-h2:text-3xl
+    prose-h2:font-bold
+    prose-h2:text-maroon
+    prose-h2:mt-10
+    prose-h2:mb-5
+
+    prose-h3:text-xl
+    sm:prose-h3:text-2xl
+    lg:prose-h3:text-3xl
+    prose-h3:font-semibold
+    prose-h3:text-gray-900
+    prose-h3:mt-8
+    prose-h3:mb-4
+
+    prose-h4:text-lg
+    sm:prose-h4:text-xl
+    lg:prose-h4:text-2xl
+    prose-h4:font-semibold
+
+    prose-ul:pl-6
+    prose-ol:pl-6
+    prose-li:my-2
+
+    prose-a:text-maroon
+    hover:prose-a:underline
+
+    prose-strong:text-maroon
+
+    prose-img:rounded-2xl
+    prose-img:shadow-xl
+    prose-img:my-8
+
+    prose-blockquote:border-l-4
+    prose-blockquote:border-maroon
+    prose-blockquote:pl-4
+    prose-blockquote:italic
+  "
                             dangerouslySetInnerHTML={{
                                 __html: service.description,
                             }}
                         />
-
                     </div>
 
                 </div>

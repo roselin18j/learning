@@ -5,9 +5,19 @@ const uploadImage = async (filePath, folder) => {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
       folder,
+      resource_type: "image",
+      overwrite: true,
+      transformation: [
+        {
+          fetch_format: "auto",
+          quality: "auto",
+        },
+      ],
     });
 
-    fs.unlinkSync(filePath);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
 
     return {
       url: result.secure_url,

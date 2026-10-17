@@ -51,17 +51,17 @@ const heroSlideSchema = new Schema(
       },
     },
 
-  image: {
-    url: {
+    image: {
+      url: {
         type: String,
         default: "",
-    },
+      },
 
-    publicId: {
+      publicId: {
         type: String,
         default: "",
-    }
-},
+      }
+    },
 
     imageAlt: {
       type: String,
@@ -206,46 +206,11 @@ const aboutSchema = new Schema(
 
 /* ---------------- Services ---------------- */
 
-const serviceItemSchema = new Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    description: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    slug: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
-
-    order: {
-      type: Number,
-      default: 1,
-    },
-
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  { _id: false }
-);
-
-const servicesSchema = new Schema(
+const serviceSchema = new Schema(
   {
     badge: {
       type: String,
-      default: "OUR SERVICES",
+      default: "Our Service",
       trim: true,
     },
 
@@ -255,24 +220,10 @@ const servicesSchema = new Schema(
       trim: true,
     },
 
-    subtitle: {
-      type: String,
-      trim: true,
-    },
-
     description: {
       type: String,
       required: true,
       trim: true,
-    },
-
-    services: {
-      type: [serviceItemSchema],
-      default: [],
-      validate: {
-        validator: (v) => v.length <= 6,
-        message: "Maximum 6 services are allowed.",
-      },
     },
 
     isActive: {
@@ -282,6 +233,8 @@ const servicesSchema = new Schema(
   },
   { _id: false }
 );
+
+
 
 /* ---------------- Why Choose Us ---------------- */
 
@@ -464,7 +417,7 @@ const homeSchema = new Schema(
 
     about: aboutSchema,
 
-    services: servicesSchema,
+    services: serviceSchema,
 
     whyChoose: whyChooseSchema,
 
@@ -490,5 +443,5 @@ export {
   heroSlideSchema,
   heroSchema,
   aboutSchema,
-  servicesSchema,
+  serviceSchema,
 };

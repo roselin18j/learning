@@ -3,19 +3,23 @@ import PageHeader from "../../Components/PageHeader/PageHeader";
 import ServicesForm from "./ServicesForm";
 
 import {
-  getService,
-  updateService,
+  getHomeServicesSection,
+  updateHomeServicesSection,
 } from "../../../../services/home.service";
+import { updateService } from "../../../../services/services.service";
 
 const Services = () => {
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
+    const updateService = async (data) => {
+        await updateHomeServicesSection(data);
+    };
 
   const loadService = async () => {
     try {
       setLoading(true);
 
-      const response = await getService();
+      const response = await getHomeServicesSection();
 
       setService(response.data.data);
     } catch (err) {
@@ -47,7 +51,8 @@ return (
 
     <ServicesForm
   service={service}
-  updateService={updateService}
+  updateHomeServicesSection={updateHomeServicesSection}
+      updateService={updateService}
   reload={loadService}
 />
 

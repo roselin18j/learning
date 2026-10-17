@@ -3,7 +3,8 @@ import {
     createService,
     updateService,
 } from "../../../services/services.service";
-
+import toast from "react-hot-toast";
+import RichTextEditor from "../Components/TextTools/RichTextEditor";
 
 export default function ServiceForm({ service, onSuccess }) {
 
@@ -230,13 +231,14 @@ export default function ServiceForm({ service, onSuccess }) {
                     Description
                 </label>
 
-                 <textarea
-                    name="Description"
-                    placeholder=" description"
-                    rows={3}
+                <RichTextEditor
                     value={formData.description}
-                    onChange={handleChange}
-                    className="w-full rounded-lg border p-3"
+                    onChange={(value) =>
+                        setFormData((prev) => ({
+                            ...prev,
+                            description: value,
+                        }))
+                    }
                 />
 
             </div>

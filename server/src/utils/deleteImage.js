@@ -1,9 +1,13 @@
 import cloudinary from "../config/cloudinary.js";
 
 const deleteImage = async (publicId) => {
+
   if (!publicId) return;
 
-  await cloudinary.uploader.destroy(publicId);
+  await cloudinary.uploader.destroy(publicId, {
+    resource_type: "image",
+  });
+
 };
 
 export default deleteImage;

@@ -85,12 +85,10 @@ router.get("/test", (req, res) => {
   res.send("TEST WORKING");
 });
 
-router.get("/services", (req, res) => {
-  res.json({
-    success: true,
-    message: "Services route working",
-  });
-});
+router.get(
+  "/services",
+  HomeController.getServicesSection
+);
 
 router.put(
   "/services",
@@ -98,7 +96,6 @@ router.put(
   validationMiddleware,
   HomeController.updateServicesSection
 );
-
 
 
 export default router;
