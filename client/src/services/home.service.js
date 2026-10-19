@@ -35,3 +35,4 @@ export const getHomeServicesSection = () =>
 
 export const updateHomeServicesSection = (data) =>
   api.put("/home/services", data);
+

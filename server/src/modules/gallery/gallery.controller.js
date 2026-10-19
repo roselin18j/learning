@@ -236,24 +236,25 @@ class GalleryController {
     /**
  * Update Video
  */
-    updateVideo = asyncHandler(async (req, res) => {
+   updateVideo = asyncHandler(async (req, res) => {
 
-        const video =
-            await GalleryService.updateVideo(
-                req.params.videoId,
-                req.body,
-                req.file
-            );
+    console.log("Update Video Controller");
+    console.log(req.params.videoId);
 
-        return res.status(200).json(
-            new ApiResponse(
-                200,
-                "Video updated successfully.",
-                video
-            )
-        );
+    const video = await GalleryService.updateVideo(
+        req.params.videoId,
+        req.body,
+        req.file
+    );
 
-    });
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Video updated successfully.",
+            video
+        )
+    );
+});
 
     /**
  * Delete Video
@@ -273,6 +274,42 @@ class GalleryController {
         );
 
     });
+
+    /**
+ * Get Homepage Images
+ */
+getHomepageImages = asyncHandler(async (req, res) => {
+
+    const images =
+        await GalleryService.getHomepageImages();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Homepage images fetched successfully.",
+            images
+        )
+    );
+
+});
+
+/**
+ * Get Homepage Videos
+ */
+getHomepageVideos = asyncHandler(async (req, res) => {
+
+    const videos =
+        await GalleryService.getHomepageVideos();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Homepage videos fetched successfully.",
+            videos
+        )
+    );
+
+});
 
 }
 

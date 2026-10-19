@@ -15,13 +15,11 @@ export default function GalleryModal({
 
     useEffect(() => {
 
-        if (!isOpen) return;
+        if (!isOpen || images.length === 0) return;
 
         const handleKeyDown = (e) => {
 
-            if (e.key === "Escape") {
-                onClose();
-            }
+            if (e.key === "Escape") onClose();
 
             if (e.key === "ArrowRight") {
                 setCurrentIndex((prev) =>
@@ -38,20 +36,18 @@ export default function GalleryModal({
         };
 
         document.addEventListener("keydown", handleKeyDown);
-
         document.body.style.overflow = "hidden";
 
         return () => {
-
             document.removeEventListener("keydown", handleKeyDown);
-
             document.body.style.overflow = "auto";
-
         };
 
-    }, [isOpen, images.length]);
+    }, [isOpen, images.length, onClose, setCurrentIndex]);
 
-    if (!isOpen) return null;
+    if (!isOpen || images.length === 0) return null;
+
+    const current = images[currentIndex];
 
     const prevImage = () =>
         setCurrentIndex((prev) =>
@@ -93,13 +89,26 @@ export default function GalleryModal({
                     <FaChevronLeft />
                 </button>
 
-                {/* Image */}
+                {/* Image / Video */}
 
-                <img
-                    src={images[currentIndex].image}
-                    alt={images[currentIndex].title}
-                    className="max-h-[85vh] w-full rounded-3xl object-contain"
-                />
+                {current.type === "video" ? (
+
+                    <video
+                        src={current.image}
+                        controls
+                        autoPlay
+                        className="max-h-[85vh] w-full rounded-3xl object-contain"
+                    />
+
+                ) : (
+
+                    <img
+                        src={current.image}
+                        alt={current.title}
+                        className="max-h-[85vh] w-full rounded-3xl object-contain"
+                    />
+
+                )}
 
                 {/* Next */}
 
@@ -115,7 +124,7 @@ export default function GalleryModal({
                 <div className="mt-6 flex items-center justify-between text-white">
 
                     <h3 className="text-2xl font-heading font-bold">
-                        {images[currentIndex].title}
+                        {current.title}
                     </h3>
 
                     <p>

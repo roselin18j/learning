@@ -123,4 +123,14 @@ router.delete(
   GalleryController.deleteVideo
 );
 
+router.get(
+    "/images/homepage",
+    GalleryController.getHomepageImages
+);
+
+router.get(
+    "/videos/homepage",
+    GalleryController.getHomepageVideos
+);
+
 export default router;

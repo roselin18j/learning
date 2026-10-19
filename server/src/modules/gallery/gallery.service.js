@@ -259,6 +259,8 @@ class GalleryService {
             title: data.title,
             category: data.category,
             description: data.description || "",
+            showOnHomepage: data.showOnHomepage ?? false,
+            homepageOrder: Number(data.homepageOrder) || 1,
             order: Number(data.order) || 1,
             isActive: data.isActive ?? true,
             image: {
@@ -337,6 +339,14 @@ class GalleryService {
 
         image.description =
             data.description ?? image.description;
+
+        if (data.showOnHomepage !== undefined) {
+            image.showOnHomepage = data.showOnHomepage;
+        }
+
+        if (data.homepageOrder !== undefined) {
+            image.homepageOrder = Number(data.homepageOrder);
+        }
 
         if (data.order !== undefined) {
             image.order = Number(data.order);
@@ -430,6 +440,8 @@ class GalleryService {
             title: data.title,
             category: data.category.toLowerCase(),
             description: data.description || "",
+            showOnHomepage: data.showOnHomepage ?? false,
+            homepageOrder: Number(data.homepageOrder) || 1,
             order: Number(data.order) || 1,
             isActive: data.isActive ?? true,
             video: {
@@ -452,85 +464,62 @@ class GalleryService {
     /**
  * Update Video
  */
-    async updateVideo(videoId, data, file) {
+  async updateVideo(videoId, data, file) {
 
-        const gallery = await this.findGallery();
+    const gallery = await this.findGallery();
 
-        const video =
-            gallery.gallerySection.videos.id(videoId);
+    const video =
+        gallery.gallerySection.videos.id(videoId);
 
-        if (!video) {
-            throw new ApiError(
-                404,
-                "Video not found."
+    if (!video) {
+        throw new ApiError(404, "Video not found.");
+    }
+
+    if (file) {
+
+        if (video.video?.publicId) {
+            await removeVideoFromCloudinary(
+                video.video.publicId
             );
         }
 
-        // Replace video only if a new file is uploaded
-        if (file) {
-
-            if (video.video?.publicId) {
-                await removeVideoFromCloudinary(
-                    video.video.publicId
-                );
-            }
-
-            const uploadedVideo = await uploadVideo(
-                file.path,
-                "gallery/videos"
-            );
-
-            video.video = {
-                url: uploadedVideo.url,
-                publicId: uploadedVideo.publicId,
-            };
-
-        }
-
-        video.title =
-            data.title ?? video.title;
-
-        if (data.category) {
-
-            const categoryExists =
-                gallery.gallerySection.categories.some(
-                    (category) =>
-                        category.slug.toLowerCase() ===
-                        data.category.toLowerCase()
-                );
-
-            if (!categoryExists) {
-                throw new ApiError(
-                    404,
-                    "Category not found."
-                );
-            }
-
-            video.category =
-                data.category.toLowerCase();
-
-        }
-
-        video.description =
-            data.description ?? video.description;
-
-        if (data.order !== undefined) {
-            video.order = Number(data.order);
-        }
-
-        if (data.isActive !== undefined) {
-            video.isActive = data.isActive;
-        }
-
-        gallery.gallerySection.videos.sort(
-            (a, b) => (a.order || 1) - (b.order || 1)
+        const uploadedVideo = await uploadVideo(
+            file.path,
+            "gallery/videos"
         );
 
-        await gallery.save();
-
-        return video;
-
+        video.video = {
+            url: uploadedVideo.url,
+            publicId: uploadedVideo.publicId,
+        };
     }
+
+    video.title = data.title ?? video.title;
+
+    if (data.showOnHomepage !== undefined) {
+        video.showOnHomepage = data.showOnHomepage;
+    }
+
+    if (data.homepageOrder !== undefined) {
+        video.homepageOrder = Number(data.homepageOrder);
+    }
+
+    if (data.order !== undefined) {
+        video.order = Number(data.order);
+    }
+
+    if (data.isActive !== undefined) {
+        video.isActive = data.isActive;
+    }
+
+    gallery.gallerySection.videos.sort(
+        (a, b) => (a.order || 1) - (b.order || 1)
+    );
+
+    await gallery.save();
+
+    return video;
+}
 
     /**
      * Delete Video
@@ -562,6 +551,45 @@ class GalleryService {
         return {
             message: "Video deleted successfully.",
         };
+
+    }
+
+    /**
+ * Get Homepage Images
+ */
+    async getHomepageImages() {
+
+        const gallery = await this.findGallery();
+
+        return gallery.gallerySection.images
+            .filter(image =>
+                image.isActive &&
+                image.showOnHomepage
+            )
+            .sort(
+                (a, b) =>
+                    (a.homepageOrder || 1) -
+                    (b.homepageOrder || 1)
+            );
+
+    }
+    /**
+     * Get Homepage Videos
+     */
+    async getHomepageVideos() {
+
+        const gallery = await this.findGallery();
+
+        return gallery.gallerySection.videos
+            .filter(video =>
+                video.isActive &&
+                video.showOnHomepage
+            )
+            .sort(
+                (a, b) =>
+                    (a.homepageOrder || 1) -
+                    (b.homepageOrder || 1)
+            );
 
     }
 

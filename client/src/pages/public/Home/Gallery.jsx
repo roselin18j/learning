@@ -1,43 +1,96 @@
-import React, { useState } from "react";
-import { FaHeart, FaSearchPlus } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaHeart, FaSearchPlus, FaPlay } from "react-icons/fa";
 import GalleryModal from "../../../common/Modal/GalleryModal";
+import GalleryService from "../../../services/gallery.service";
 
 export default function Gallery() {
-    const gallery = [
-        {
-            id: 1,
-            image: "https://picsum.photos/id/1015/700/900",
-            title: "Medical Camp",
-        },
-        {
-            id: 2,
-            image: "https://picsum.photos/id/1025/700/700",
-            title: "Food Distribution",
-        },
-        {
-            id: 3,
-            image: "https://picsum.photos/id/1035/700/900",
-            title: "Education Support",
-        },
-        {
-            id: 4,
-            image: "https://picsum.photos/id/1045/700/700",
-            title: "Community Service",
-        },
-        {
-            id: 5,
-            image: "https://picsum.photos/id/1055/700/900",
-            title: "Volunteer Program",
-        },
-        {
-            id: 6,
-            image: "https://picsum.photos/id/1065/700/800",
-            title: "Tree Plantation",
-        },
-    ];
+
+    const [gallery, setGallery] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [isOpen, setIsOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        fetchGallery();
+    }, []);
+
+    const fetchGallery = async () => {
+
+        try {
+
+            const [imagesRes, videosRes] = await Promise.all([
+                GalleryService.getImages(),
+                GalleryService.getVideos(),
+            ]);
+
+            const homepageImages = imagesRes.data.data
+                .filter(
+                    (item) =>
+                        item.showOnHomepage &&
+                        item.isActive
+                )
+                .map((item) => ({
+                    _id: item._id,
+                    type: "image",
+                    title: item.title,
+                    media: item.image.url,
+                    homepageOrder: item.homepageOrder,
+                }));
+
+            const homepageVideos = videosRes.data.data
+                .filter(
+                    (item) =>
+                        item.showOnHomepage &&
+                        item.isActive
+                )
+                .map((item) => ({
+                    _id: item._id,
+                    type: "video",
+                    title: item.title,
+                    media: item.video.url,
+                    homepageOrder: item.homepageOrder,
+                }));
+
+            const galleryData = [
+                ...homepageImages,
+                ...homepageVideos,
+            ].sort(
+                (a, b) =>
+                    a.homepageOrder - b.homepageOrder
+            );
+
+            setGallery(galleryData);
+
+        } catch (error) {
+
+            console.error(error);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    if (loading) {
+
+        return (
+
+            <section className="py-24 bg-white">
+
+                <div className="container text-center">
+
+                    <div className="h-10 w-10 mx-auto border-4 border-maroon border-t-transparent rounded-full animate-spin"></div>
+
+                </div>
+
+            </section>
+
+        );
+
+    }
 
     return (
         <>
@@ -62,37 +115,56 @@ export default function Gallery() {
                         {gallery.map((item, index) => (
 
                             <div
-                                key={item.id}
+                                key={item._id}
                                 onClick={() => {
-                                    setCurrentIndex(index);
-                                    setIsOpen(true);
+
+                                    if (item.type === "image") {
+
+                                        setCurrentIndex(index);
+                                        setIsOpen(true);
+
+                                    }
+
                                 }}
                                 className="group relative mb-6 cursor-pointer overflow-hidden rounded-[30px]"
                             >
 
-                                <img
-                                    src={item.image}
-                                    alt={item.title}
-                                    className="w-full rounded-[30px] transition duration-700  group-hover:scale-110"
-                                />
+                                {item.type === "image" ? (
 
-                                {/* Overlay */}
+                                    <img
+                                        src={item.media}
+                                        alt={item.title}
+                                        className="w-full rounded-[30px] transition duration-700 group-hover:scale-110"
+                                    />
+
+                                ) : (
+
+                                    <video
+                                        src={item.media}
+                                        className="w-full rounded-[30px]"
+                                        muted
+                                        preload="metadata"
+                                    />
+
+                                )}
 
                                 <div className="absolute inset-0 bg-black/0 transition duration-500 group-hover:bg-black/40"></div>
 
-                                {/* Heart */}
-
                                 <FaHeart className="absolute right-5 top-5 text-2xl text-white opacity-0 transition duration-500 group-hover:opacity-100" />
-
-                                {/* Center Icon */}
 
                                 <div className="absolute inset-0 flex items-center justify-center opacity-0 transition duration-500 group-hover:opacity-100">
 
-                                    <FaSearchPlus className="text-5xl text-white" />
+                                    {item.type === "image" ? (
+
+                                        <FaSearchPlus className="text-5xl text-white" />
+
+                                    ) : (
+
+                                        <FaPlay className="text-5xl text-white" />
+
+                                    )}
 
                                 </div>
-
-                                {/* Bottom */}
 
                                 <div className="absolute bottom-6 left-6 right-6 translate-y-8 opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
 
@@ -116,7 +188,12 @@ export default function Gallery() {
 
             <GalleryModal
                 isOpen={isOpen}
-                images={gallery}
+                images={gallery
+                    .filter((item) => item.type === "image")
+                    .map((item) => ({
+                        image: item.media,
+                        title: item.title,
+                    }))}
                 currentIndex={currentIndex}
                 setCurrentIndex={setCurrentIndex}
                 onClose={() => setIsOpen(false)}
