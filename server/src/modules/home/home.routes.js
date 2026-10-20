@@ -8,6 +8,7 @@ import {
   updateHeroSettingsValidation,
   updateAboutSectionValidation,
   updateServicesValidation,
+  updateWhyChooseValidation,
 } from "./home.validation.js";
 
 import validationMiddleware from "../../middleware/validation.middleware.js";
@@ -97,5 +98,17 @@ router.put(
   HomeController.updateServicesSection
 );
 
+router.get(
+    "/why-choose",
+    HomeController.getWhyChooseSection
+);
+
+router.put(
+    "/why-choose",
+    upload.single("image"),
+    updateWhyChooseValidation,
+    validationMiddleware,
+    HomeController.updateWhyChooseSection
+);
 
 export default router;

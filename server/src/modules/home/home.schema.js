@@ -234,37 +234,86 @@ const serviceSchema = new Schema(
   { _id: false }
 );
 
-
-
 /* ---------------- Why Choose Us ---------------- */
 
-const whyChooseItemSchema = new Schema(
-  {
-    title: String,
-
-    description: String,
-
-    icon: String,
-  },
-  { _id: false }
-);
-
 const whyChooseSchema = new Schema(
-  {
-    title: String,
+    {
+        badge: {
+            type: String,
+            default: "Why families trust us",
+        },
 
-    subtitle: String,
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+        },
 
-    image: String,
+        description: {
+            type: String,
+            default: "",
+            trim: true,
+        },
 
-    points: [whyChooseItemSchema],
+        image: {
+            url: {
+                type: String,
+                required: true,
+            },
 
-    isActive: {
-      type: Boolean,
-      default: true,
+            publicId: {
+                type: String,
+                required: true,
+            },
+
+            alt: {
+                type: String,
+                default: "",
+            },
+        },
+
+        stats: {
+            number: {
+                type: String,
+                default: "18K+",
+            },
+
+            title: {
+                type: String,
+                default: "Lives Positively Impacted",
+            },
+        },
+
+        features: [
+            {
+                title: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+            },
+        ],
+
+        button: {
+            text: {
+                type: String,
+                default: "Learn More",
+            },
+
+            link: {
+                type: String,
+                default: "/about",
+            },
+        },
+
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
     },
-  },
-  { _id: false }
+    {
+        _id: false,
+    }
 );
 
 /* ---------------- Impact Counter ---------------- */
@@ -444,4 +493,5 @@ export {
   heroSchema,
   aboutSchema,
   serviceSchema,
+  whyChooseSchema,
 };

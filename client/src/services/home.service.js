@@ -30,9 +30,18 @@ export const updateAbout = (data) =>
 
 // Homepage Services Section
 export const getHomeServicesSection = () =>
-  
+
   api.get("/home/services");
 
 export const updateHomeServicesSection = (data) =>
   api.put("/home/services", data);
 
+export const getWhyChoose = () =>
+  api.get("/home/why-choose");
+
+export const updateWhyChoose = (formData) =>
+  api.put("/home/why-choose", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

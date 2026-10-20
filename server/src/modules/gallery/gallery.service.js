@@ -417,20 +417,6 @@ class GalleryService {
             throw new ApiError(400, "Video is required.");
         }
 
-        const categoryExists =
-            gallery.gallerySection.categories.some(
-                (category) =>
-                    category.slug.toLowerCase() ===
-                    data.category.toLowerCase()
-            );
-
-        if (!categoryExists) {
-            throw new ApiError(
-                404,
-                "Category not found."
-            );
-        }
-
         const uploadedVideo = await uploadVideo(
             file.path,
             "gallery/videos"
@@ -438,16 +424,13 @@ class GalleryService {
 
         gallery.gallerySection.videos.push({
             title: data.title,
-            category: data.category.toLowerCase(),
-            description: data.description || "",
-            showOnHomepage: data.showOnHomepage ?? false,
+            showOnHomepage: data.showOnHomepage === "true" || data.showOnHomepage === true,
             homepageOrder: Number(data.homepageOrder) || 1,
             order: Number(data.order) || 1,
-            isActive: data.isActive ?? true,
+            isActive: data.isActive === "true" || data.isActive === true,
             video: {
                 url: uploadedVideo.url,
                 publicId: uploadedVideo.publicId,
-                alt: data.alt || data.title,
             },
         });
 
@@ -464,62 +447,62 @@ class GalleryService {
     /**
  * Update Video
  */
-  async updateVideo(videoId, data, file) {
+    async updateVideo(videoId, data, file) {
 
-    const gallery = await this.findGallery();
+        const gallery = await this.findGallery();
 
-    const video =
-        gallery.gallerySection.videos.id(videoId);
+        const video =
+            gallery.gallerySection.videos.id(videoId);
 
-    if (!video) {
-        throw new ApiError(404, "Video not found.");
-    }
-
-    if (file) {
-
-        if (video.video?.publicId) {
-            await removeVideoFromCloudinary(
-                video.video.publicId
-            );
+        if (!video) {
+            throw new ApiError(404, "Video not found.");
         }
 
-        const uploadedVideo = await uploadVideo(
-            file.path,
-            "gallery/videos"
+        if (file) {
+
+            if (video.video?.publicId) {
+                await removeVideoFromCloudinary(
+                    video.video.publicId
+                );
+            }
+
+            const uploadedVideo = await uploadVideo(
+                file.path,
+                "gallery/videos"
+            );
+
+            video.video = {
+                url: uploadedVideo.url,
+                publicId: uploadedVideo.publicId,
+            };
+        }
+
+        video.title = data.title ?? video.title;
+
+        if (data.showOnHomepage !== undefined) {
+            video.showOnHomepage = data.showOnHomepage;
+        }
+
+        if (data.homepageOrder !== undefined) {
+            video.homepageOrder = Number(data.homepageOrder);
+        }
+
+        if (data.order !== undefined) {
+            video.order = Number(data.order);
+        }
+
+        if (data.isActive !== undefined) {
+            video.isActive = data.isActive;
+        }
+
+        gallery.gallerySection.videos.sort(
+            (a, b) => (a.order || 1) - (b.order || 1)
         );
 
-        video.video = {
-            url: uploadedVideo.url,
-            publicId: uploadedVideo.publicId,
-        };
+        await gallery.save();
+
+        return video;
     }
-
-    video.title = data.title ?? video.title;
-
-    if (data.showOnHomepage !== undefined) {
-        video.showOnHomepage = data.showOnHomepage;
-    }
-
-    if (data.homepageOrder !== undefined) {
-        video.homepageOrder = Number(data.homepageOrder);
-    }
-
-    if (data.order !== undefined) {
-        video.order = Number(data.order);
-    }
-
-    if (data.isActive !== undefined) {
-        video.isActive = data.isActive;
-    }
-
-    gallery.gallerySection.videos.sort(
-        (a, b) => (a.order || 1) - (b.order || 1)
-    );
-
-    await gallery.save();
-
-    return video;
-}
 
     /**
      * Delete Video

@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
-import { aboutSchema, heroSchema, serviceSchema } from "./home.schema.js";
+import {
+  aboutSchema,
+  heroSchema,
+  serviceSchema,
+  whyChooseSchema,
+} from "./home.schema.js";
 
 const { Schema, model } = mongoose;
 
@@ -9,12 +14,19 @@ const homeSchema = new Schema(
       type: heroSchema,
       default: () => ({}),
     },
+
     aboutSection: {
       type: aboutSchema,
       default: () => ({}),
     },
-    serviceSchema: {
+
+    services: {
       type: serviceSchema,
+      default: () => ({}),
+    },
+
+    whyChoose: {
+      type: whyChooseSchema,
       default: () => ({}),
     },
   },

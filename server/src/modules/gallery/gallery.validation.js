@@ -59,11 +59,7 @@ export const updateCategoryValidation = [
     .withMessage("Status must be true or false."),
 
 ];
-/*
-|--------------------------------------------------------------------------
-| Video Validation
-|--------------------------------------------------------------------------
-*/
+
 /*
 |--------------------------------------------------------------------------
 | Video Validation
@@ -79,25 +75,20 @@ export const createVideoValidation = [
     .isLength({ max: 150 })
     .withMessage("Title cannot exceed 150 characters."),
 
-  body("category")
-    .trim()
-    .notEmpty()
-    .withMessage("Category is required."),
-
-  body("description")
+  body("homepageOrder")
     .optional()
-    .trim(),
-
-  body("alt")
-    .optional()
-    .trim()
-    .isLength({ max: 150 })
-    .withMessage("Alt text cannot exceed 150 characters."),
+    .isInt({ min: 1 })
+    .withMessage("Homepage Order must be at least 1."),
 
   body("order")
     .optional()
     .isInt({ min: 1 })
     .withMessage("Order must be at least 1."),
+
+  body("showOnHomepage")
+    .optional()
+    .isBoolean()
+    .withMessage("Show On Homepage must be true or false."),
 
   body("isActive")
     .optional()
@@ -114,24 +105,20 @@ export const updateVideoValidation = [
     .isLength({ max: 150 })
     .withMessage("Title cannot exceed 150 characters."),
 
-  body("category")
+  body("homepageOrder")
     .optional()
-    .trim(),
-
-  body("description")
-    .optional()
-    .trim(),
-
-  body("alt")
-    .optional()
-    .trim()
-    .isLength({ max: 150 })
-    .withMessage("Alt text cannot exceed 150 characters."),
+    .isInt({ min: 1 })
+    .withMessage("Homepage Order must be at least 1."),
 
   body("order")
     .optional()
     .isInt({ min: 1 })
     .withMessage("Order must be at least 1."),
+
+  body("showOnHomepage")
+    .optional()
+    .isBoolean()
+    .withMessage("Show On Homepage must be true or false."),
 
   body("isActive")
     .optional()

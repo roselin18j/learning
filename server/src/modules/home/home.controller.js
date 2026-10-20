@@ -247,6 +247,60 @@ updateServicesSection = asyncHandler(async (req, res) => {
   );
 
 });
+
+
+/**
+ * Get Why Choose Section
+ */
+getWhyChooseSection = asyncHandler(async (req, res) => {
+
+    const whyChoose =
+        await HomeService.getWhyChooseSection();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Why Choose section fetched successfully.",
+            whyChoose
+        )
+    );
+
+});
+
+/**
+ * Update Why Choose Section
+ */
+updateWhyChooseSection = asyncHandler(async (req, res) => {
+
+    // Parse JSON fields from FormData
+    if (req.body.stats && typeof req.body.stats === "string") {
+        req.body.stats = JSON.parse(req.body.stats);
+    }
+
+    if (req.body.button && typeof req.body.button === "string") {
+        req.body.button = JSON.parse(req.body.button);
+    }
+
+    if (req.body.features && typeof req.body.features === "string") {
+        req.body.features = JSON.parse(req.body.features);
+    }
+
+    const whyChoose =
+    await HomeService.updateWhyChooseSection(
+        req.body,
+        req.file
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Why Choose section updated successfully.",
+            whyChoose
+        )
+    );
+
+});
+
 }
 
 export default new HomeController();

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { FaHeart, FaSearchPlus, FaPlay } from "react-icons/fa";
+import {
+    FaHeart,
+    FaSearchPlus,
+    FaPlay,
+} from "react-icons/fa";
 import GalleryModal from "../../../common/Modal/GalleryModal";
 import GalleryService from "../../../services/gallery.service";
 
@@ -34,7 +38,7 @@ export default function Gallery() {
                     _id: item._id,
                     type: "image",
                     title: item.title,
-                    media: item.image.url,
+                    image: item.image.url,
                     homepageOrder: item.homepageOrder,
                 }));
 
@@ -48,11 +52,11 @@ export default function Gallery() {
                     _id: item._id,
                     type: "video",
                     title: item.title,
-                    media: item.video.url,
+                    image: item.video.url,
                     homepageOrder: item.homepageOrder,
                 }));
 
-            const galleryData = [
+            const allGallery = [
                 ...homepageImages,
                 ...homepageVideos,
             ].sort(
@@ -60,7 +64,7 @@ export default function Gallery() {
                     a.homepageOrder - b.homepageOrder
             );
 
-            setGallery(galleryData);
+            setGallery(allGallery);
 
         } catch (error) {
 
@@ -93,6 +97,7 @@ export default function Gallery() {
     }
 
     return (
+
         <>
             <section className="py-24 bg-white">
 
@@ -117,14 +122,8 @@ export default function Gallery() {
                             <div
                                 key={item._id}
                                 onClick={() => {
-
-                                    if (item.type === "image") {
-
-                                        setCurrentIndex(index);
-                                        setIsOpen(true);
-
-                                    }
-
+                                    setCurrentIndex(index);
+                                    setIsOpen(true);
                                 }}
                                 className="group relative mb-6 cursor-pointer overflow-hidden rounded-[30px]"
                             >
@@ -132,7 +131,7 @@ export default function Gallery() {
                                 {item.type === "image" ? (
 
                                     <img
-                                        src={item.media}
+                                        src={item.image}
                                         alt={item.title}
                                         className="w-full rounded-[30px] transition duration-700 group-hover:scale-110"
                                     />
@@ -140,7 +139,7 @@ export default function Gallery() {
                                 ) : (
 
                                     <video
-                                        src={item.media}
+                                        src={item.image}
                                         className="w-full rounded-[30px]"
                                         muted
                                         preload="metadata"
@@ -188,16 +187,13 @@ export default function Gallery() {
 
             <GalleryModal
                 isOpen={isOpen}
-                images={gallery
-                    .filter((item) => item.type === "image")
-                    .map((item) => ({
-                        image: item.media,
-                        title: item.title,
-                    }))}
+                images={gallery}
                 currentIndex={currentIndex}
                 setCurrentIndex={setCurrentIndex}
                 onClose={() => setIsOpen(false)}
             />
         </>
+
     );
+
 }

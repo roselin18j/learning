@@ -277,3 +277,96 @@ export const updateServicesValidation = [
     .optional()
     .isBoolean()
 ];
+
+
+/* ==========================================================================
+   Update Why Choose Section
+========================================================================== */
+
+export const updateWhyChooseValidation = [
+
+    body("badge")
+        .trim()
+        .notEmpty()
+        .withMessage("Badge is required.")
+        .isLength({ max: 100 })
+        .withMessage("Badge cannot exceed 100 characters."),
+
+    body("title")
+        .trim()
+        .notEmpty()
+        .withMessage("Title is required.")
+        .isLength({ max: 200 })
+        .withMessage("Title cannot exceed 200 characters."),
+
+    body("description")
+        .trim()
+        .notEmpty()
+        .withMessage("Description is required.")
+        .isLength({ max: 1500 })
+        .withMessage("Description cannot exceed 1500 characters."),
+
+    // Stats
+    body("stats")
+        .customSanitizer((value) => {
+            if (typeof value === "string") {
+                return JSON.parse(value);
+            }
+            return value;
+        }),
+
+    body("stats.number")
+        .trim()
+        .notEmpty()
+        .withMessage("Stats number is required."),
+
+    body("stats.title")
+        .trim()
+        .notEmpty()
+        .withMessage("Stats title is required."),
+
+    // Button
+    body("button")
+        .customSanitizer((value) => {
+            if (typeof value === "string") {
+                return JSON.parse(value);
+            }
+            return value;
+        }),
+
+    body("button.text")
+        .trim()
+        .notEmpty()
+        .withMessage("Button text is required.")
+        .isLength({ max: 50 })
+        .withMessage("Button text cannot exceed 50 characters."),
+
+    body("button.link")
+        .trim()
+        .notEmpty()
+        .withMessage("Button link is required."),
+
+    // Features
+    body("features")
+        .customSanitizer((value) => {
+            if (typeof value === "string") {
+                return JSON.parse(value);
+            }
+            return value;
+        })
+        .isArray({ min: 1 })
+        .withMessage("At least one feature is required."),
+
+    body("features.*")
+        .trim()
+        .notEmpty()
+        .withMessage("Feature cannot be empty.")
+        .isLength({ max: 150 })
+        .withMessage("Feature cannot exceed 150 characters."),
+
+    body("isActive")
+        .optional()
+        .isBoolean()
+        .withMessage("Status must be true or false."),
+
+];

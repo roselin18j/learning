@@ -1,22 +1,52 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     FaCheck,
     FaArrowRight,
 } from "react-icons/fa";
 
-import whyImg from "../../../assets/images/mnbanner.jpg";
+import { getWhyChoose } from "../../../services/home.service";
 
 export default function WhyChoose() {
 
-    const features = [
-        "100% Transparent Organization",
-        "Dedicated Volunteer Network",
-        "Community-Centered Programs",
-        "Trusted Donation Management",
-        "Quick Emergency Response",
-        "Sustainable Long-Term Impact",
-    ];
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchWhyChoose();
+    }, []);
+
+    const fetchWhyChoose = async () => {
+
+        try {
+
+            const response = await getWhyChoose();
+
+            setData(response.data.data);
+
+        } catch (error) {
+
+            console.error(error);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    if (loading) {
+
+        return (
+            <section className="py-24 text-center">
+                Loading...
+            </section>
+        );
+
+    }
+
+    if (!data || !data.isActive) return null;
 
     return (
 
@@ -33,19 +63,19 @@ export default function WhyChoose() {
                         <div className="absolute -top-4 -left-4 h-full w-full border-2 border-gold" />
 
                         <img
-                            src={whyImg}
-                            alt="Volunteers standing together at sunrise"
+                            src={data.image?.url}
+                            alt={data.image?.alt || data.title}
                             className="relative h-[600px] w-full object-cover"
                         />
 
                         <div className="absolute bottom-0 left-0 border-l-4 border-gold bg-maroon px-8 py-6 text-white">
 
                             <h3 className="text-3xl font-heading font-bold">
-                                18K+
+                                {data.stats?.number}
                             </h3>
 
                             <p className="mt-1 text-white/80">
-                                Lives Positively Impacted
+                                {data.stats?.title}
                             </p>
 
                         </div>
@@ -57,49 +87,60 @@ export default function WhyChoose() {
                     <div>
 
                         <div className="flex items-center gap-3">
+
                             <span className="w-6 h-0.5 bg-maroon" />
+
                             <span className="text-sm font-semibold text-maroon">
-                                Why families trust us
+
+                                {data.badge}
+
                             </span>
+
                         </div>
 
-                        <h2 className="mt-4 font-heading text-4xl lg:text-5xl font-bold text-blackleading-tight">
-                            Built on transparency, run by the community
+                        <h2 className="mt-4 font-heading text-4xl lg:text-5xl font-bold text-black leading-tight">
+
+                            {data.title}
+
                         </h2>
 
                         <p className="mt-6 leading-8 text-gray-600">
-                            Every contribution creates measurable change,
-                            tracked from the first rupee to the last meal
-                            served.
+
+                            {data.description}
+
                         </p>
 
-                        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+                        <ul className="mt-10 grid gap-5 sm:grid-cols-2">
 
-                            {features.map((item) => (
+                            {data.features.map((item, index) => (
 
-                                <div
-                                    key={item}
+                                <li
+                                    key={index}
                                     className="flex items-start gap-3"
                                 >
 
-                                    <FaCheck className="mt-1 shrink-0 text-maroon" />
+                                    <FaCheck className="mt-1 text-maroon" />
 
                                     <span className="text-gray-700">
-                                        {item}
+                                        {item.title}
                                     </span>
 
-                                </div>
+                                </li>
 
                             ))}
 
-                        </div>
+                        </ul>
 
                         <Link
-                            to="/about"
+                            to={data.button?.link || "/about"}
                             className="group mt-12 inline-flex items-center rounded-sm bg-maroon px-7 py-4 font-semibold text-white transition-colors duration-300 hover:bg-darkmaroon"
                         >
 
-                            <span>Learn More</span>
+                            <span>
+
+                                {data.button?.text || "Learn More"}
+
+                            </span>
 
                             <FaArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
 

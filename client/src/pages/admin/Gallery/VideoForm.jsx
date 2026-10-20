@@ -15,17 +15,11 @@ const initialState = {
 const VideoForm = ({ show, onClose, fetchVideos, video }) => {
     const [formData, setFormData] = useState(initialState);
     const [videoFile, setVideoFile] = useState(null);
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        loadCategories();
-    }, []);
 
     useEffect(() => {
         if (video) {
             setFormData({
                 title: video.title,
-                category: video.category,
                 showOnHomepage: video.showOnHomepage,
                 homepageOrder: video.homepageOrder,
                 order: video.order,
@@ -38,14 +32,7 @@ const VideoForm = ({ show, onClose, fetchVideos, video }) => {
         setVideoFile(null);
     }, [video]);
 
-    const loadCategories = async () => {
-        try {
-            const response = await GalleryService.getCategories();
-            setCategories(response.data.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+  
 
     const handleChange = (e) => {
         const { name, value, checked, type } = e.target;
@@ -63,7 +50,6 @@ const VideoForm = ({ show, onClose, fetchVideos, video }) => {
             const submitData = new FormData();
 
             submitData.append("title", formData.title);
-            submitData.append("category", formData.category);
             submitData.append("showOnHomepage", formData.showOnHomepage);
             submitData.append("homepageOrder", formData.homepageOrder);
             submitData.append("order", formData.order);
@@ -128,30 +114,7 @@ const VideoForm = ({ show, onClose, fetchVideos, video }) => {
                                 required
                             />
                         </div>
-
-                        {/* Category */}
                     
-
-                        {/* Thumbnail */}
-                        <div>
-                            <label className="block mb-2 font-medium text-gray-700">
-                                Thumbnail
-                            </label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setThumbnail(e.target.files[0])}
-                                className="w-full border rounded-lg px-4 py-3"
-                            />
-
-                            {video?.thumbnail?.url && (
-                                <img
-                                    src={video.thumbnail.url}
-                                    alt={video.title}
-                                    className="mt-3 w-40 h-24 rounded-lg border object-cover"
-                                />
-                            )}
-                        </div>
 
                         {/* Video */}
                         <div>

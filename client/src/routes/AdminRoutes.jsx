@@ -6,6 +6,7 @@ import About from "../pages/admin/Home/About/About";
 import Services from "../pages/admin/Home/Services/Services";
 import Service from "../pages/admin/Services/Services";
 import Gallery from "../pages/admin/Gallery/Gallery";
+import WhyChoose from "../pages/admin/Home/Whychoose/Whychoose";
 
 export default function AdminRoutes() {
     return (
@@ -18,11 +19,18 @@ export default function AdminRoutes() {
                 <Route path="hero" element={<Hero />} />
                 <Route path="about" element={<About />} />
                 <Route path="services" element={<Services />} />
+                <Route
+                    path="whychooseus"
+                    element={<WhyChoose />}
+                />
             </Route>
 
             <Route path="gallery" element={<Gallery />} />
 
-            <Route path="services" element={<Service />} />
+            <Route
+                path="services"
+                element={<Service />}
+            />
         </>
     );
 }

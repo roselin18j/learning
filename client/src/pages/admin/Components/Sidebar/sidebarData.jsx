@@ -38,6 +38,10 @@ const sidebarData = [
         path: "/admin/homepage/services",
       },
       {
+        title: "WhyChoose us",
+        path: "/admin/homepage/whychooseus",
+      },
+      {
         title: "Events",
         path: "/admin/homepage/events",
       },
