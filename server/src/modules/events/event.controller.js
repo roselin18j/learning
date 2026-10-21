@@ -3,55 +3,55 @@ import ApiResponse from "../../utils/ApiResponse.js";
 import ApiError from "../../utils/ApiError.js";
 import cloudinary from "../../config/cloudinary.js";
 import uploadImage from "../../utils/uploadImage.js";
-import ServiceService from "./service.service.js";
+import EventService from "./event.service.js";
 
-class ServiceController {
+class EventController {
 
   /**
-   * GET /api/v1/service
+   * GET /api/v1/event
    */
-  getServicePage = asyncHandler(async (req, res) => {
+  getEventPage = asyncHandler(async (req, res) => {
 
-    const service = await ServiceService.getServicePage();
+    const event = await EventService.getEventPage();
 
     return res.status(200).json(
       new ApiResponse(
         200,
-        "Service page fetched successfully.",
-        service
+        "Event page fetched successfully.",
+        event
       )
     );
 
   });
 
   /**
-   * POST /api/v1/service
+   * POST /api/v1/event
    */
-  createServicePage = asyncHandler(async (req, res) => {
+  createEventPage = asyncHandler(async (req, res) => {
 
-    const service = await ServiceService.createServicePage();
+    const event = await EventService.createEventPage();
 
     return res.status(201).json(
       new ApiResponse(
         201,
-        "Service page created successfully.",
-        service
+        "Event page created successfully.",
+        event
       )
     );
 
   });
 
   /**
-   * PUT /api/v1/service/header
+   * PUT /api/v1/event/header
    */
-  updateServiceHeader = asyncHandler(async (req, res) => {
+  updateEventHeader = asyncHandler(async (req, res) => {
 
-    const header = await ServiceService.updateServiceHeader(req.body);
+    const header = await EventService.updateEventHeader(req.body);
 
     return res.status(200).json(
       new ApiResponse(
         200,
-        "Service header updated successfully.",
+        "Event header updated successfully.",
         header
       )
     );
@@ -59,44 +59,47 @@ class ServiceController {
   });
 
   /**
-   * POST /api/v1/service/item
+   * POST /api/v1/event/item
    */
-addService = asyncHandler(async (req, res) => {
-
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
+  addEvent = asyncHandler(async (req, res) => {
 
     if (!req.file) {
-        throw new ApiError(400, "Service image is required.");
+      throw new ApiError(400, "Event image is required.");
     }
 
-    const image = await uploadImage(req.file.path, "ngo/services");
+    const image = await uploadImage(
+      req.file.path,
+      "ngo/events"
+    );
 
-    console.log("IMAGE:", image);
-
-    const service = await ServiceService.addService({
-        ...req.body,
-        image,
+    const event = await EventService.addEvent({
+      ...req.body,
+      image,
     });
 
     return res.status(201).json(
-        new ApiResponse(201, "Service added successfully.", service)
+      new ApiResponse(
+        201,
+        "Event added successfully.",
+        event
+      )
     );
-});
+
+  });
 
   /**
-   * PUT /api/v1/service/item/:serviceId
+   * PUT /api/v1/event/item/:eventId
    */
-  updateService = asyncHandler(async (req, res) => {
+  updateEvent = asyncHandler(async (req, res) => {
 
-    const page = await ServiceService.getServicePage();
+    const page = await EventService.getEventPage();
 
-    const service = page.serviceSection.services.id(
-      req.params.serviceId
+    const event = page.eventSection.events.id(
+      req.params.eventId
     );
 
-    if (!service) {
-      throw new ApiError(404, "Service not found.");
+    if (!event) {
+      throw new ApiError(404, "Event not found.");
     }
 
     let data = {
@@ -105,75 +108,83 @@ addService = asyncHandler(async (req, res) => {
 
     if (req.file) {
 
-      if (service.image?.publicId) {
-
+      if (event.image?.publicId) {
         await cloudinary.uploader.destroy(
-          service.image.publicId
+          event.image.publicId
         );
-
       }
 
       const image = await uploadImage(
         req.file.path,
-        "ngo/services"
+        "ngo/events"
       );
 
       data.image = image;
-
     }
 
-    const updatedService =
-      await ServiceService.updateService(
-        req.params.serviceId,
-        data
-      );
+    const updatedEvent = await EventService.updateEvent(
+      req.params.eventId,
+      data
+    );
 
     return res.status(200).json(
       new ApiResponse(
         200,
-        "Service updated successfully.",
-        updatedService
+        "Event updated successfully.",
+        updatedEvent
       )
     );
 
   });
 
   /**
-   * DELETE /api/v1/service/item/:serviceId
+   * DELETE /api/v1/event/item/:eventId
    */
-  deleteService = asyncHandler(async (req, res) => {
+  deleteEvent = asyncHandler(async (req, res) => {
 
-    const page = await ServiceService.getServicePage();
+    const page = await EventService.getEventPage();
 
-    const service = page.serviceSection.services.id(
-      req.params.serviceId
+    const event = page.eventSection.events.id(
+      req.params.eventId
     );
 
-    if (!service) {
-      throw new ApiError(404, "Service not found.");
+    if (!event) {
+      throw new ApiError(404, "Event not found.");
     }
 
-    if (service.image?.publicId) {
-
+    if (event.image?.publicId) {
       await cloudinary.uploader.destroy(
-        service.image.publicId
+        event.image.publicId
       );
-
     }
 
-    await ServiceService.deleteService(
-      req.params.serviceId
+    await EventService.deleteEvent(
+      req.params.eventId
     );
 
     return res.status(200).json(
       new ApiResponse(
         200,
-        "Service deleted successfully."
+        "Event deleted successfully."
       )
     );
 
   });
 
+  getEventBySlug = asyncHandler(async (req, res) => {
+
+    const event = await EventService.getEventBySlug(req.params.slug);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            "Event fetched successfully.",
+            event
+        )
+    );
+
+});
+
 }
 
-export default new ServiceController();
+export default new EventController();

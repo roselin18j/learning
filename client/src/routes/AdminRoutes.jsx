@@ -7,6 +7,7 @@ import Services from "../pages/admin/Home/Services/Services";
 import Service from "../pages/admin/Services/Services";
 import Gallery from "../pages/admin/Gallery/Gallery";
 import WhyChoose from "../pages/admin/Home/Whychoose/Whychoose";
+import Events from "../pages/admin/Events/Events";
 
 export default function AdminRoutes() {
     return (
@@ -30,6 +31,11 @@ export default function AdminRoutes() {
             <Route
                 path="services"
                 element={<Service />}
+            />
+
+             <Route
+                path="events"
+                element={<Events />}
             />
         </>
     );

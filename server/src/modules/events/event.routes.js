@@ -1,64 +1,66 @@
 import express from "express";
 import upload from "../../middleware/upload.middleware.js";
-import ServiceController from "./service.controller.js";
+import EventController from "./event.controller.js";
 import {
-  validateServiceHeader,
-  validateService,
-} from "./service.validation.js";
+  validateEventHeader,
+  validateEvent,
+} from "./event.validation.js";
 
 const router = express.Router();
 
 /**
- * GET Service Page
+ * GET Event Page
  */
 router.get(
   "/",
-  ServiceController.getServicePage
+  EventController.getEventPage
 );
 
 /**
- * CREATE Service Page (Only Once)
+ * CREATE Event Page (Only Once)
  */
 router.post(
   "/",
-  ServiceController.createServicePage
+  EventController.createEventPage
 );
 
 /**
- * UPDATE Header
+ * UPDATE Event Header
  */
 router.put(
   "/header",
-  validateServiceHeader,
-  ServiceController.updateServiceHeader
+  validateEventHeader,
+  EventController.updateEventHeader
 );
 
 /**
- * ADD Service
+ * ADD Event
  */
 router.post(
   "/item",
   upload.single("image"),
-  validateService,
-  ServiceController.addService
+  validateEvent,
+  EventController.addEvent
 );
 
 /**
- * UPDATE Service
+ * UPDATE Event
  */
 router.put(
-  "/item/:serviceId",
+  "/item/:eventId",
   upload.single("image"),
-  validateService,
-  ServiceController.updateService
+  validateEvent,
+  EventController.updateEvent
 );
 
 /**
- * DELETE Service
+ * DELETE Event
  */
 router.delete(
-  "/item/:serviceId",
-  ServiceController.deleteService
+  "/item/:eventId",
+  EventController.deleteEvent
 );
+
+router.get("/:slug", EventController.getEventBySlug);
 
 export default router;

@@ -1,20 +1,21 @@
 import mongoose from "mongoose";
-import { servicesSchema } from "./service.schema.js";
+import { eventsSchema } from "./event.schema.js";
 
 const { Schema, model } = mongoose;
 
-const servicePageSchema = new Schema(
+const eventPageSchema = new Schema(
   {
-    serviceSection: {
-      type: servicesSchema,
+    eventSection: {
+      type: eventsSchema,
       default: () => ({}),
     },
   },
   {
     timestamps: true,
+    collection: "eventpages",
   }
 );
 
-const ServicePage = model("ServicePage", servicePageSchema);
+const EventPage = model("EventPage", eventPageSchema);
 
-export default ServicePage;
+export default EventPage;
