@@ -214,158 +214,100 @@ class HomeService {
   /**
    * Get Services Section
    */
-  async getServiceSection() {
+async getServiceSection() {
+  const home = await this.findHome();
 
-    const home = await this.findHome();
-
-    return home.serviceSchema;
-  }
+  return home.services;
+}
 
   /**
    * Update Services Section
    */
-  async updateServiceSection(data) {
+async updateServiceSection(data) {
+  const home = await this.findHome();
 
-    const home = await this.findHome();
+  const updatedServices = {
+    badge: data.badge ?? home.services?.badge,
+    title: data.title ?? home.services?.title,
+    description: data.description ?? home.services?.description,
+    isActive: data.isActive ?? home.services?.isActive ?? true,
+  };
 
-    if (!home.serviceSchema) {
+  await Home.updateOne(
+    { _id: home._id },
+    {
+      $set: {
+        services: updatedServices,
+      },
+    },
+    { runValidators: true }
+  );
 
-      home.serviceSchema = {
-        badge: "OUR SERVICES",
-        title: "",
-        subtitle: "",
-        description: "",
-        services: [],
-        isActive: true,
-      };
-
-    }
-
-    home.serviceSchema.badge =
-      data.badge ?? home.serviceSchema.badge;
-
-    home.serviceSchema.title =
-      data.title ?? home.serviceSchema.title;
-
-    home.serviceSchema.subtitle =
-      data.subtitle ?? home.serviceSchema.subtitle;
-
-    home.serviceSchema.description =
-      data.description ?? home.serviceSchema.description;
-
-    if (data.services) {
-      home.serviceSchema.services = data.services;
-    }
-
-    home.serviceSchema.isActive =
-      data.isActive ?? home.serviceSchema.isActive;
-
-    await home.save();
-
-    return home.serviceSchema;
-  }
+  return updatedServices;
+}
 
 
   /**
    * Get Why Choose Section
    */
-  async getWhyChooseSection() {
+  /**
+ * Get Why Choose Section
+ */
+async getWhyChooseSection() {
+  const home = await this.findHome();
 
-    const home = await this.findHome();
+  return home.whyChoose;
+}
 
-    return home.whyChoose;
+/**
+ * Update Why Choose Section
+ */
+async updateWhyChooseSection(data) {
+  const home = await this.findHome();
 
+  // Badge
+  home.whyChoose.badge =
+    data.badge ?? home.whyChoose.badge;
+
+  // Title
+  home.whyChoose.title =
+    data.title ?? home.whyChoose.title;
+
+  // Description
+  home.whyChoose.description =
+    data.description ?? home.whyChoose.description;
+
+  // Image
+  if (data.image) {
+    home.whyChoose.image = data.image;
   }
 
-  async updateWhyChooseSection(data, imageFile) {
-
-    const home = await this.findHome();
-
-    if (!home.whyChoose) {
-      home.whyChoose = {
-        badge: "",
-        title: "",
-        description: "",
-        image: {
-          url: "",
-          publicId: "",
-          alt: "",
-        },
-        stats: {
-          number: "",
-          title: "",
-        },
-        features: [],
-        button: {
-          text: "Learn More",
-          link: "/about",
-        },
-        isActive: true,
-      };
-    }
-
-    home.whyChoose.badge =
-      data.badge ?? home.whyChoose.badge;
-
-    home.whyChoose.title =
-      data.title ?? home.whyChoose.title;
-
-    home.whyChoose.description =
-      data.description ?? home.whyChoose.description;
-
-    // Image Upload
-    if (imageFile) {
-
-      if (home.whyChoose.image?.publicId) {
-        await removeImageFromCloudinary(
-          home.whyChoose.image.publicId
-        );
-      }
-
-      const uploadedImage =
-        await uploadImageToCloudinary(
-          imageFile.path,
-          "whychoose"
-        );
-
-      home.whyChoose.image = {
-        url: uploadedImage.secure_url,
-        publicId: uploadedImage.public_id,
-        alt: data.imageAlt || "",
-      };
-    }
-
-    // Stats
-    if (data.stats) {
-
-      home.whyChoose.stats =
-        typeof data.stats === "string"
-          ? JSON.parse(data.stats)
-          : data.stats;
-    }
-
-    // Features
-    if (data.features) {
-
-      home.whyChoose.features =
-        typeof data.features === "string"
-          ? JSON.parse(data.features)
-          : data.features;
-    }
-
-    // Active
-    if (data.isActive !== undefined) {
-
-      home.whyChoose.isActive =
-        data.isActive === "true" ||
-        data.isActive === true;
-    }
-
-    await home.save();
-
-    return home.whyChoose;
+  // Stats
+  if (data.stats !== undefined) {
+    home.whyChoose.stats = data.stats;
   }
-  
+
+  // Features
+  if (data.features !== undefined) {
+    home.whyChoose.features = data.features;
+  }
+
+  // Button
+  if (data.button !== undefined) {
+    home.whyChoose.button = data.button;
+  }
+
+  // Active
+  if (data.isActive !== undefined) {
+    home.whyChoose.isActive =
+      data.isActive === "true" ||
+      data.isActive === true;
+  }
+
+  await home.save();
+
+  return home.whyChoose;
+}
 }
 
 export default new HomeService();

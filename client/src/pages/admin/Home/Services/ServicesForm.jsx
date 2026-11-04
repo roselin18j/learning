@@ -11,7 +11,6 @@ export default function ServicesForm({
   const [formData, setFormData] = useState({
     badge: "",
     title: "",
-    subtitle: "",
     description: "",
     isActive: true,
   });
@@ -21,7 +20,6 @@ export default function ServicesForm({
       setFormData({
         badge: service.badge || "",
         title: service.title || "",
-        subtitle: service.subtitle || "",
         description: service.description || "",
         isActive: service.isActive ?? true,
       });

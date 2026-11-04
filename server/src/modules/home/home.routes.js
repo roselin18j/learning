@@ -99,12 +99,12 @@ router.put(
 );
 
 router.get(
-    "/why-choose",
+    "/whychoose",
     HomeController.getWhyChooseSection
 );
 
 router.put(
-    "/why-choose",
+    "/whychoose",
     upload.single("image"),
     updateWhyChooseValidation,
     validationMiddleware,
