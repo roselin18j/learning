@@ -234,7 +234,6 @@ const serviceSchema = new Schema(
   { _id: false }
 );
 
-/* ---------------- Why Choose Us ---------------- */
 
 const whyChooseSchema = new Schema(
     {
