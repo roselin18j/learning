@@ -16,28 +16,40 @@ export default function EventsList() {
     const [search, setSearch] = useState("");
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
-
+const [header, setHeader] = useState({
+    badge: "",
+    title: "",
+    description: "",
+});
     useEffect(() => {
 
         fetchEvents();
 
     }, []);
 
-    const fetchEvents = async () => {
-        try {
-            const response = await getEvents();
-            setEvents(
-                response.data.data.eventSection.events
-            );
-        } catch (error) {
-            console.error(
-                "Failed to fetch events",
-                error
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
+const fetchEvents = async () => {
+
+    try {
+
+        const response = await getEvents();
+
+        const data = response.data.data;
+
+        setHeader(data.eventSection.header);
+
+        setEvents(data.eventSection.events);
+
+    } catch (error) {
+
+        console.error(error);
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+};
 
     const filteredEvents = useMemo(() => {
         return events.filter((item) => {

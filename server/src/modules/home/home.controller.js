@@ -246,6 +246,39 @@ updateServicesSection = asyncHandler(async (req, res) => {
   );
 });
 
+// event section
+
+getEventsSection = asyncHandler(async (req, res) => {
+  const service = await HomeService.getEventsSection();
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "Events fetched successfully.",
+      service
+    )
+  );
+});
+
+/**
+ * UPDATE Services Section
+ */
+updateEventsSection = asyncHandler(async (req, res) => {
+  const data = {
+    ...req.body,
+  };
+
+  const services = await HomeService.updateEventsSection(data);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      "Events updated successfully.",
+      services
+    )
+  );
+});
+
 
 /**
  * Get Why Choose Section

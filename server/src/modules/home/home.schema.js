@@ -235,6 +235,37 @@ const serviceSchema = new Schema(
 );
 
 
+// Events heading
+
+const eventsSectionSchema = new Schema(
+  {
+    badge: {
+      type: String,
+      default: "Our Service",
+      trim: true,
+    },
+
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { _id: false }
+);
+
+
 const whyChooseSchema = new Schema(
     {
         badge: {
@@ -493,4 +524,5 @@ export {
   aboutSchema,
   serviceSchema,
   whyChooseSchema,
+  eventsSectionSchema,
 };

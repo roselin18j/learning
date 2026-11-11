@@ -248,8 +248,42 @@ async updateServiceSection(data) {
 
 
   /**
-   * Get Why Choose Section
+   * Events heading section
    */
+
+async getEventsSection() {
+  const home = await this.findHome();
+
+  return home.events;
+}
+
+  /**
+   * Update Services Section
+   */
+async updateEventsSection(data) {
+  const home = await this.findHome();
+
+  const updatedEvents = {
+    badge: data.badge ?? home.events?.badge,
+    title: data.title ?? home.events?.title,
+    description: data.description ?? home.events?.description,
+    isActive: data.isActive ?? home.events?.isActive ?? true,
+  };
+
+  await Home.updateOne(
+    { _id: home._id },
+    {
+      $set: {
+        events: updatedEvents,
+      },
+    },
+    { runValidators: true }
+  );
+
+  return updatedEvents;
+}
+
+
   /**
  * Get Why Choose Section
  */

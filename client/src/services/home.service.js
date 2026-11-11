@@ -36,6 +36,13 @@ export const getHomeServicesSection = () =>
 export const updateHomeServicesSection = (data) =>
   api.put("/home/services", data);
 
+export const getHomeEventsSection = () =>
+
+  api.get("/home/events");
+
+export const updateHomeEventsSection = (data) =>
+  api.put("/home/events", data);
+
 export const getWhyChoose = () =>
   api.get("/home/whychoose");
 

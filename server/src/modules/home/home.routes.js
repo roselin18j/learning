@@ -99,6 +99,18 @@ router.put(
 );
 
 router.get(
+  "/events",
+  HomeController.getEventsSection
+);
+
+router.put(
+  "/events",
+  updateServicesValidation,
+  validationMiddleware,
+  HomeController.updateEventsSection
+);
+
+router.get(
     "/whychoose",
     HomeController.getWhyChooseSection
 );

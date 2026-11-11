@@ -4,6 +4,7 @@ import {
   heroSchema,
   serviceSchema,
   whyChooseSchema,
+  eventsSectionSchema,
 } from "./home.schema.js";
 
 const { Schema, model } = mongoose;
@@ -29,6 +30,11 @@ const homeSchema = new Schema(
       type: whyChooseSchema,
       default: () => ({}),
     },
+
+    eventsSection : {
+      type:eventsSectionSchema,
+      default: () => ({}),
+    }
   },
   {
     timestamps: true,

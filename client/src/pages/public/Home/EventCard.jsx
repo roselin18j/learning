@@ -1,66 +1,96 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
     FaHeart,
     FaArrowRight,
     FaCalendarAlt,
     FaMapMarkerAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+
+import { getEvents } from "../../../services/events.service";
+import { getHomeEventsSection } from "../../../services/home.service";
 
 export default function EventCard() {
 
-    const events = [
-        {
-            id: 1,
-            date: "25",
-            month: "August 2026",
-            title: "Community Health Camp",
-            description:
-                "Free health check-ups, medical consultations and medicines for underprivileged families.",
-            location: "Madurai, Tamil Nadu",
-            eventDate: "25 August 2026",
-        },
-        {
-            id: 2,
-            date: "12",
-            month: "September 2026",
-            title: "Food Distribution Drive",
-            description:
-                "Providing nutritious meals and groceries to families facing financial hardship.",
-            location: "Dindigul, Tamil Nadu",
-            eventDate: "12 September 2026",
-        },
-        {
-            id: 3,
-            date: "08",
-            month: "October 2026",
-            title: "Education Support Program",
-            description:
-                "Distributing school bags, books and learning materials to underprivileged children.",
-            location: "Theni, Tamil Nadu",
-            eventDate: "08 October 2026",
-        },
-    ];
+    const [events, setEvents] = useState([]);
+    const [heading, setHeading] = useState({});
+
+    useEffect(() => {
+        fetchEvents();
+    }, []);
+
+    const fetchEvents = async () => {
+
+        try {
+
+            const response = await getEvents();
+            const headingRes = await getHomeEventsSection();
+
+            const headingData =
+                headingRes?.data?.data?.eventSection ||
+                headingRes?.data?.data?.eventSection ||
+                headingRes?.data?.data ||
+                {};
+
+            setHeading(headingData);
+
+            const allEvents =
+                response.data.data.eventSection.events;
+
+            const homepageEvents = allEvents
+                .filter(
+                    (item) =>
+                        item.showOnHomepage &&
+                        item.isPublished
+                )
+                .sort(
+                    (a, b) =>
+                        a.homepageOrder - b.homepageOrder
+                )
+                .slice(0, 3);
+
+            setEvents(homepageEvents);
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
 
     return (
         <section className="py-24 bg-ivory">
 
             <div className="container">
 
-                <div className="text-center max-w-3xl mx-auto">
+                {/* Static Heading */}
 
-                    <span className="rounded-full bg-maroon px-5 py-2 text-sm font-semibold text-white">
-                        UPCOMING EVENTS
-                    </span>
+                <div className="text-center max-w-3xl mx-auto mb-16">
 
-                    <h2 className="mt-6 text-5xl font-heading font-bold text-black">
-                        Join Our Upcoming Events
-                    </h2>
+                    {heading.badge && (
+                        <span className="px-5 py-2 rounded-full bg-maroon text-white text-sm font-semibold">
+                            {heading.badge}
+                        </span>
+                    )}
 
-                    <p className="mt-5 leading-8 text-gray-600">
-                        Be part of meaningful initiatives that bring hope,
-                        compassion and positive change to our communities.
-                    </p>
+                    {heading.title && (
+                        <h2 className="mt-6 text-5xl font-heading font-bold">
+                            {heading.title}
+                        </h2>
+                    )}
+
+                    {heading.subtitle && (
+                        <h4 className="mt-4 text-xl text-maroon">
+                            {heading.subtitle}
+                        </h4>
+                    )}
+
+                    {heading.description && (
+                        <p className="mt-5 text-gray-600 leading-8">
+                            {heading.description}
+                        </p>
+                    )}
 
                 </div>
 
@@ -69,11 +99,9 @@ export default function EventCard() {
                     {events.map((item) => (
 
                         <div
-                            key={item.id}
+                            key={item._id}
                             className="group relative overflow-hidden rounded-[30px] border border-maroon/10 bg-white p-8 shadow-[0_15px_35px_rgba(0,0,0,.08)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(109,8,8,.18)]"
                         >
-
-                            {/* Folded Corner */}
 
                             <div className="absolute top-0 right-0">
 
@@ -87,27 +115,38 @@ export default function EventCard() {
 
                             </div>
 
-                            {/* Date */}
+                            <img
+                                src={item.image?.url}
+                                alt={item.title}
+                                className="h-60 w-full object-cover transition duration-500 group-hover:scale-110"
+                            />
 
-                            <span className="text-5xl font-heading font-bold text-maroon">
-                                {item.date}
+                            <span className="mt-6 block text-5xl font-heading font-bold text-maroon">
+                                {new Date(item.eventDate).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                        day: "2-digit",
+                                    }
+                                )}
                             </span>
 
                             <p className="uppercase tracking-[4px] text-gray-500">
-                                {item.month}
+                                {new Date(item.eventDate).toLocaleDateString(
+                                    "en-US",
+                                    {
+                                        month: "long",
+                                        year: "numeric",
+                                    }
+                                )}
                             </p>
-
-                            {/* Title */}
 
                             <h3 className="mt-8 text-2xl font-heading font-bold text-black">
                                 {item.title}
                             </h3>
 
                             <p className="mt-4 leading-7 text-gray-600">
-                                {item.description}
+                                {item.shortDescription}
                             </p>
-
-                            {/* Event Info */}
 
                             <div className="mt-6 space-y-3">
 
@@ -115,7 +154,11 @@ export default function EventCard() {
 
                                     <FaCalendarAlt className="text-maroon" />
 
-                                    <span>{item.eventDate}</span>
+                                    <span>
+                                        {new Date(
+                                            item.eventDate
+                                        ).toLocaleDateString()}
+                                    </span>
 
                                 </div>
 
@@ -130,9 +173,10 @@ export default function EventCard() {
                             </div>
 
                             <Link
-                                to="/events"
+                                to={`/events/${item.slug}`}
                                 className="group/btn mt-8 inline-flex items-center font-semibold text-maroon"
                             >
+
                                 Learn More
 
                                 <FaArrowRight className="ml-2 transition-all duration-300 group-hover/btn:ml-4" />
@@ -151,9 +195,11 @@ export default function EventCard() {
                         to="/events"
                         className="group inline-flex items-center rounded-xl bg-maroon px-7 py-4 font-semibold text-white transition-all duration-300 hover:bg-green"
                     >
+
                         <span>View All Events</span>
 
                         <FaHeart className="ml-2 transition-all duration-300 group-hover:ml-4" />
+
                     </Link>
 
                 </div>
@@ -163,148 +209,3 @@ export default function EventCard() {
         </section>
     );
 }
-
-// import React from "react";
-// import {
-//     FaArrowRight,
-//     FaCalendarAlt,
-//     FaMapMarkerAlt,
-// } from "react-icons/fa";
-// import { Link } from "react-router-dom";
-
-// export default function EventCard() {
-
-//     const events = [
-//         {
-//             id: 1,
-//             date: "25",
-//             month: "August 2026",
-//             title: "Community Health Camp",
-//             description:
-//                 "Free health check-ups, medical consultations and medicines for underprivileged families.",
-//             location: "Madurai, Tamil Nadu",
-//             eventDate: "25 August 2026",
-//         },
-//         {
-//             id: 2,
-//             date: "12",
-//             month: "September 2026",
-//             title: "Food Distribution Drive",
-//             description:
-//                 "Providing nutritious meals and groceries to families facing financial hardship.",
-//             location: "Dindigul, Tamil Nadu",
-//             eventDate: "12 September 2026",
-//         },
-//         {
-//             id: 3,
-//             date: "08",
-//             month: "October 2026",
-//             title: "Education Support Program",
-//             description:
-//                 "Distributing school bags, books and learning materials to underprivileged children.",
-//             location: "Theni, Tamil Nadu",
-//             eventDate: "08 October 2026",
-//         },
-//     ];
-
-//     return (
-//         <section className="py-24 bg-ivory">
-
-//             <div className="container">
-
-//                 <div className="max-w-2xl">
-
-//                     <div className="flex items-center gap-3">
-//                         <span className="w-6 h-0.5 bg-gold" />
-//                         <span className="text-sm font-semibold text-maroon">
-//                             Get involved
-//                         </span>
-//                     </div>
-
-//                     <h2 className="mt-4 text-4xl lg:text-5xl font-heading font-bold text-blackleading-tight">
-//                         Upcoming on the ground
-//                     </h2>
-
-//                     <p className="mt-5 leading-8 text-black/70">
-//                         Be part of meaningful initiatives that bring hope,
-//                         compassion and positive change to our communities.
-//                     </p>
-
-//                 </div>
-
-//                 <div className="mt-14 divide-y divide-maroon/15 border-t border-b border-maroon/15">
-
-//                     {events.map((item) => (
-
-//                         <div
-//                             key={item.id}
-//                             className="grid gap-4 py-8 sm:grid-cols-[110px_1fr_180px] sm:items-center"
-//                         >
-
-//                             {/* Date */}
-//                             <div>
-//                                 <span className="text-4xl font-heading font-bold text-maroon">
-//                                     {item.date}
-//                                 </span>
-//                                 <p className="uppercase tracking-[2px] text-xs text-black/50 mt-1">
-//                                     {item.month}
-//                                 </p>
-//                             </div>
-
-//                             {/* Title + description */}
-//                             <div>
-//                                 <h3 className="text-xl font-heading font-bold text-black">
-//                                     {item.title}
-//                                 </h3>
-
-//                                 <p className="mt-2 leading-7 text-black/70">
-//                                     {item.description}
-//                                 </p>
-
-//                                 <Link
-//                                     to="/events"
-//                                     className="group/btn mt-3 inline-flex items-center font-semibold text-maroon"
-//                                 >
-//                                     Learn More
-//                                     <FaArrowRight className="ml-2 text-sm transition-transform duration-300 group-hover/btn:translate-x-1" />
-//                                 </Link>
-//                             </div>
-
-//                             {/* Location / date meta */}
-//                             <div className="space-y-2 sm:text-right">
-
-//                                 <div className="flex items-center gap-2 sm:justify-end">
-//                                     <FaCalendarAlt className="text-gold" />
-//                                     <span className="text-sm text-black/70">{item.eventDate}</span>
-//                                 </div>
-
-//                                 <div className="flex items-center gap-2 sm:justify-end">
-//                                     <FaMapMarkerAlt className="text-gold" />
-//                                     <span className="text-sm text-black/70">{item.location}</span>
-//                                 </div>
-
-//                             </div>
-
-//                         </div>
-
-//                     ))}
-
-//                 </div>
-
-//                 <div className="mt-14">
-
-//                     <Link
-//                         to="/events"
-//                         className="group inline-flex items-center rounded-sm bg-maroon px-7 py-4 font-semibold text-white transition-colors duration-300 hover:bg-darkmaroon"
-//                     >
-//                         <span>View All Events</span>
-//                         <FaArrowRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-//                     </Link>
-
-//                 </div>
-
-//             </div>
-
-//         </section>
-//     );
-// }

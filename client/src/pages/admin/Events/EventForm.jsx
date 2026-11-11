@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import {
     createEvent,
     updateEvent,
+    getEvents,
+    updateEventHeader,
 } from "../../../services/events.service";
 
 import toast from "react-hot-toast";
@@ -25,8 +27,14 @@ export default function EventForm({ event, onSuccess }) {
         isPublished: true,
     });
 
-    useEffect(() => {
+    const [header, setHeader] = useState({
+    badge: "",
+    title: "",
+    description: "",
+});
 
+    useEffect(() => {
+ loadHeader();
         if (event) {
 
             setFormData({
@@ -50,6 +58,44 @@ export default function EventForm({ event, onSuccess }) {
         }
 
     }, [event]);
+
+    const loadHeader = async () => {
+    try {
+
+        const res = await getEvents();
+
+        const headerData = res.data.data.eventSection.header;
+
+        setHeader({
+            badge: headerData.badge || "",
+            title: headerData.title || "",
+            description: headerData.description || "",
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const saveHeader = async () => {
+
+    try {
+
+        await updateEventHeader(header);
+
+        toast.success("Header updated successfully!");
+
+    } catch (error) {
+
+        console.log(error);
+
+        toast.error(
+            error.response?.data?.message ||
+            "Failed to update header."
+        );
+    }
+
+};
 
     // Generate Slug Automatically
     const createSlug = (text) => {
@@ -196,6 +242,79 @@ export default function EventForm({ event, onSuccess }) {
 
     };
         return (
+<>
+            <div className="mb-10 rounded-xl border bg-white p-6 shadow">
+
+    <h2 className="mb-6 text-2xl font-bold">
+        Homepage Header
+    </h2>
+
+    <div className="space-y-5">
+
+        <div>
+            <label className="mb-2 block font-medium">
+                Badge
+            </label>
+
+            <input
+                type="text"
+                value={header.badge}
+                onChange={(e) =>
+                    setHeader({
+                        ...header,
+                        badge: e.target.value,
+                    })
+                }
+                className="w-full rounded-lg border p-3"
+            />
+        </div>
+
+        <div>
+            <label className="mb-2 block font-medium">
+                Title
+            </label>
+
+            <input
+                type="text"
+                value={header.title}
+                onChange={(e) =>
+                    setHeader({
+                        ...header,
+                        title: e.target.value,
+                    })
+                }
+                className="w-full rounded-lg border p-3"
+            />
+        </div>
+
+        <div>
+            <label className="mb-2 block font-medium">
+                Description
+            </label>
+
+            <textarea
+                rows={4}
+                value={header.description}
+                onChange={(e) =>
+                    setHeader({
+                        ...header,
+                        description: e.target.value,
+                    })
+                }
+                className="w-full rounded-lg border p-3"
+            />
+        </div>
+
+        <button  type="button"
+            onClick={saveHeader}
+            className="rounded-lg bg-maroon px-6 py-3 text-white"
+        >
+            Save Header
+        </button>
+
+    </div>
+
+</div>
 
         <form
             onSubmit={handleSubmit}
@@ -449,7 +568,7 @@ export default function EventForm({ event, onSuccess }) {
             </div>
 
         </form>
-
+</>
     );
 
 }
