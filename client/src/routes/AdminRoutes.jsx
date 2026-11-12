@@ -8,6 +8,7 @@ import Service from "../pages/admin/Services/Services";
 import Gallery from "../pages/admin/Gallery/Gallery";
 import WhyChoose from "../pages/admin/Home/Whychoose/Whychoose";
 import Events from "../pages/admin/Events/Events";
+import EventForm from "../pages/admin/Events/EventForm";
 
 export default function AdminRoutes() {
     return (
@@ -20,6 +21,10 @@ export default function AdminRoutes() {
                 <Route path="hero" element={<Hero />} />
                 <Route path="about" element={<About />} />
                 <Route path="services" element={<Services />} />
+                <Route
+                    path="events"
+                    element={<EventForm />}
+                />
                 <Route
                     path="whychooseus"
                     element={<WhyChoose />}
